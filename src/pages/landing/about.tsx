@@ -6,25 +6,25 @@ export default function About() {
       <style>
         {`
           .custom-shape-divider-bottom-1752911759 {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-    transform: rotate(180deg);
-}
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            transform: rotate(180deg);
+        }
 
-.custom-shape-divider-bottom-1752911759 svg {
-    position: relative;
-    display: block;
-    width: calc(153% + 1.3px);
-    height: 32px;
-}
+        .custom-shape-divider-bottom-1752911759 svg {
+            position: relative;
+            display: block;
+            width: calc(153% + 1.3px);
+            height: 32px;
+        }
 
-.custom-shape-divider-bottom-1752911759 .shape-fill {
-    fill: #FFFFFF;
-}
+        .custom-shape-divider-bottom-1752911759 .shape-fill {
+            fill: #FFFFFF;
+        }
         `}
       </style>
       <div id="about" className="custom-shape-divider-bottom-1752911759">
