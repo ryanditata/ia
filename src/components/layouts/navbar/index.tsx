@@ -1,239 +1,143 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-scroll";
-import { TextAlignEnd, X, MoveUpRight } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import Logo from "@/assets/img/logo.png";
+import { useActiveSection } from "@/hooks/useActiveSection";
+
+const navItems = [
+  { to: "hero", label: "Home" },
+  { to: "about", label: "About Us" },
+  { to: "collaboration-types", label: "Collaboration" },
+  { to: "partners", label: "Partners" },
+  { to: "news", label: "News" },
+  { to: "contact", label: "Contact" },
+];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const activeSection = useActiveSection();
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 100) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 20);
     };
-
     window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const navClassName = scrolled
+    ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-lg shadow-black/5 dark:shadow-black/20"
+    : "bg-transparent";
+
+  const linkClass = (to: string) => {
+    const isActive = activeSection === to;
+    const baseClass =
+      "cursor-pointer text-sm font-medium transition-all duration-300 ease-in-out rounded-lg px-3 py-2";
+    if (scrolled) {
+      return isActive
+        ? "text-primary-600 bg-primary-50 dark:bg-primary-900/30 dark:text-primary-400"
+        : "text-slate-600 hover:text-primary-600 hover:bg-primary-50/50 dark:text-slate-300 dark:hover:text-primary-400 dark:hover:bg-primary-900/20";
+    }
+    return isActive
+      ? "text-white bg-white/20"
+      : "text-white/90 hover:text-white hover:bg-white/10";
+  };
 
   return (
     <nav
-      className={`fixed top-0 left-0 z-50 w-full transition-colors duration-400 ${
-        scrolled ? "bg-white shadow-lg shadow-black/5" : "bg-transparent"
-      }`}
+      className={`fixed top-0 left-0 z-50 w-full transition-all duration-300 ease-in-out ${navClassName}`}
     >
-      <div className="container flex items-center justify-between py-3">
-        <div className="flex items-center">
-          <img src={Logo} alt="Logo" className="h-10 lg:h-14" />
-        </div>
-        <ul className={`hidden items-center md:flex md:space-x-8`}>
-          <li className="nav-item">
-            <Link
-              to="hero"
-              smooth={true}
-              duration={500}
-              className={`nav-link cursor-pointer text-lg font-medium transition-all duration-300 md:text-sm
-                ${scrolled 
-                  ? "text-gray-700 hover:text-primary-600" 
-                  : "text-neutral-50 hover:text-primary-600"
-                }`}
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+        <Link to="hero" smooth duration={500}>
+          <img
+            src={Logo}
+            alt="Logo"
+            className="h-10 transition-transform duration-300 hover:scale-105 lg:h-12"
+          />
+        </Link>
+
+        {/* Desktop Nav */}
+        <ul className="hidden items-center gap-1 md:flex">
+          {navItems.map((item) => (
+            <li key={item.to}>
+              <Link
+                to={item.to}
+                smooth
+                duration={500}
+                className={linkClass(item.to)}
               >
-                Home
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link
-              to="about"
-              smooth={true}
-              duration={500}
-              className={`nav-link cursor-pointer text-lg font-medium transition-all duration-300 md:text-sm
-                ${scrolled 
-                  ? "text-gray-700 hover:text-primary-600" 
-                  : "text-neutral-50 hover:text-primary-600"
-                }`}
-              >
-                About Us
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link
-              to="collaboration-types"
-              smooth={true}
-              duration={500}
-              className={`nav-link cursor-pointer text-lg font-medium transition-all duration-300 md:text-sm
-                ${scrolled 
-                  ? "text-gray-700 hover:text-primary-600" 
-                  : "text-neutral-50 hover:text-primary-600"
-                }`}
-              >
-                Collaboration
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link
-              to="partners"
-              smooth={true}
-              duration={500}
-              className={`nav-link cursor-pointer text-lg font-medium transition-all duration-300 md:text-sm
-                ${scrolled 
-                  ? "text-gray-700 hover:text-primary-600" 
-                  : "text-neutral-50 hover:text-primary-600"
-                }`}
-              >
-                Partners
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link
-              to="news"
-              smooth={true}
-              duration={500}
-              className={`nav-link cursor-pointer text-lg font-medium transition-all duration-300 md:text-sm
-                ${scrolled 
-                  ? "text-gray-700 hover:text-primary-600" 
-                  : "text-neutral-50 hover:text-primary-600"
-                }`}
-              >
-                News
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link
-              to="contact"
-              smooth={true}
-              duration={500}
-              className={`nav-link cursor-pointer text-lg font-medium transition-all duration-300 md:text-sm
-                ${scrolled 
-                  ? "text-gray-700 hover:text-primary-600" 
-                  : "text-neutral-50 hover:text-primary-600"
-                }`}
-              >
-                Contact
-            </Link>
-          </li>
-          <a
-            href="https://lkui.dinus.id/login" 
-            className="rounded-full bg-[#114D91] px-6 py-2 text-sm font-semibold text-white shadow-md shadow-black/10 transition-all duration-200 hover:bg-primary-600 active:scale-95 cursor-pointer">
-            Login
-          </a>
+                {item.label}
+              </Link>
+            </li>
+          ))}
         </ul>
-        <div className="md:hidden">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className={`focus:outline-none transition-colors duration-300
-                ${scrolled 
-                  ? "text-gray-700 hover:text-black" 
-                  : "text-neutral-50 hover:text-white"
-                }`}
+
+        <div className="hidden items-center gap-4 md:flex">
+          <a
+            href="https://lkui.dinus.id/login"
+            className="group relative rounded-full bg-primary-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary-500/25 transition-all duration-300 ease-in-out hover:bg-primary-700 hover:shadow-primary-500/40 hover:scale-[1.02] active:scale-[0.98]"
           >
-            {isOpen ? <X size={24} /> : <TextAlignEnd size={24} />}
-          </button>
-          {isOpen && (
-            <div className="absolute top-16 right-14 w-64 rounded-xl bg-white p-4 shadow-xl shadow-black/10">
-              <ul className="space-y-1 text-sm">
-                <li>
+            <span className="relative z-10">Login</span>
+          </a>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className={`rounded-lg p-2 transition-colors duration-300 md:hidden ${
+            scrolled
+              ? "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+              : "text-white hover:bg-white/10"
+          }`}
+          aria-label="Toggle menu"
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden border-t border-slate-200/50 bg-white/95 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/95 md:hidden"
+          >
+            <ul className="space-y-1 px-4 py-4">
+              {navItems.map((item) => (
+                <li key={item.to}>
                   <Link
-                    to="hero"
+                    to={item.to}
                     smooth
                     duration={500}
-                    onClick={toggleMenu}
-                    className="block rounded-lg px-4 py-2 text-gray-700 transition-all duration-200 hover:bg-primary-50 hover:text-primary-600"
+                    onClick={() => setIsOpen(false)}
+                    className={`block rounded-xl px-4 py-3 text-slate-700 transition-all duration-200 dark:text-slate-300 ${
+                      activeSection === item.to
+                        ? "bg-primary-50 font-medium text-primary-600 dark:bg-primary-900/30 dark:text-primary-400"
+                        : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                    }`}
                   >
-                    Home
+                    {item.label}
                   </Link>
                 </li>
-
-                <li>
-                  <Link
-                    to="about"
-                    smooth
-                    duration={500}
-                    onClick={toggleMenu}
-                    className="block rounded-lg px-4 py-2 text-gray-700 transition-all duration-200 hover:bg-primary-50 hover:text-primary-600"
-                  >
-                    About Us
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    to="collaboration-types"
-                    smooth
-                    duration={500}
-                    onClick={toggleMenu}
-                    className="block rounded-lg px-4 py-2 text-gray-700 transition-all duration-200 hover:bg-primary-50 hover:text-primary-600"
-                  >
-                    Collaboration
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    to="partners"
-                    smooth
-                    duration={500}
-                    onClick={toggleMenu}
-                    className="block rounded-lg px-4 py-2 text-gray-700 transition-all duration-200 hover:bg-primary-50 hover:text-primary-600"
-                  >
-                    Partners
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    to="news"
-                    smooth
-                    duration={500}
-                    onClick={toggleMenu}
-                    className="block rounded-lg px-4 py-2 text-gray-700 transition-all duration-200 hover:bg-primary-50 hover:text-primary-600"
-                  >
-                    News
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    to="contact"
-                    smooth
-                    duration={500}
-                    onClick={toggleMenu}
-                    className="block rounded-lg px-4 py-2 text-gray-700 transition-all duration-200 hover:bg-primary-50 hover:text-primary-600"
-                  >
-                    Contact
-                  </Link>
-                </li>
-              </ul>
-
-              <div className="my-4 border-t border-gray-300"></div>
-
-              <a
-                href="https://wa.me/6281391002282"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex w-full items-center justify-center gap-2 rounded-lg border border-[#114D91] py-2 text-sm font-medium text-slate-700 transition-all duration-200 hover:bg-primary-50"
-              >
-                Partner With Us <MoveUpRight size={14} />
-              </a>
-
+              ))}
+            </ul>
+            <div className="border-t border-slate-200 px-4 py-4 dark:border-slate-700">
               <a
                 href="https://lkui.dinus.id/login"
-                className="mt-3 block w-full rounded-lg bg-[#114D91] py-2 text-sm text-center font-medium text-white shadow-md transition-all duration-200 hover:bg-primary-600">
+                className="flex w-full items-center justify-center rounded-full bg-primary-600 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-500/25 transition-all duration-300 hover:bg-primary-700"
+              >
                 Login
               </a>
             </div>
-          )}
-        </div>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

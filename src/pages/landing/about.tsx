@@ -1,78 +1,132 @@
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import MapChart from "@/components/layouts/mapchart";
+import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
+
+const stats = [
+  {
+    value: 10000,
+    label: "Students",
+    suffix: "+",
+  },
+  {
+    value: 500,
+    label: "Completed Projects",
+    suffix: "+",
+  },
+  {
+    value: 50,
+    label: "Countries",
+    suffix: "+",
+  },
+];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+};
 
 export default function About() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
   return (
-    <>
-      <style>
-        {`
-          .custom-shape-divider-bottom-1752911759 {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            overflow: hidden;
-            line-height: 0;
-            transform: rotate(180deg);
-        }
+    <div
+      id="about"
+      className="relative overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 py-20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950"
+    >
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-50 dark:bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)]" />
 
-        .custom-shape-divider-bottom-1752911759 svg {
-            position: relative;
-            display: block;
-            width: calc(153% + 1.3px);
-            height: 32px;
-        }
-
-        .custom-shape-divider-bottom-1752911759 .shape-fill {
-            fill: #FFFFFF;
-        }
-        `}
-      </style>
-      <div id="about" className="custom-shape-divider-bottom-1752911759">
-        <svg
-          data-name="Layer 1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1200 120"
-          preserveAspectRatio="none"
+      <div ref={ref} className="container relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          className="space-y-16"
         >
-          <path
-            d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
-            opacity=".25"
-            className="shape-fill"
-          ></path>
-          <path
-            d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z"
-            opacity=".5"
-            className="shape-fill"
-          ></path>
-          <path
-            d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"
-            className="shape-fill"
-          ></path>
-        </svg>
-      </div>
-      <div className="container bg-white py-12 lg:space-y-16">
-        <div className="space-y-8 text-center">
-          <h2 className="text-xl font-bold lg:text-3xl">About Us</h2>
-          <p className="text-sm text-neutral-700 lg:text-lg">
-            We are a platform that connects students from universities around
-            the world to collaborate on academic projects. With a mission to
-            create an inclusive and innovative learning environment, we provide
-            a space for students to share ideas, knowledge, and experiences.
-          </p>
-          <p className="text-sm text-neutral-700 lg:text-lg">
-            We take pride in our growing community. Currently, we have over
-            <strong> 10,000 students</strong> from various universities
-            worldwide who have joined and collaborated on numerous academic
-            projects. With more than
-            <strong> 500 completed projects</strong>, we remain committed to
-            fostering an inclusive and innovative learning environment.
-          </p>
-        </div>
+          {/* Section Header */}
+          <motion.div variants={itemVariants} className="space-y-4 text-center">
+            <h2 className="text-2xl font-semibold text-slate-900 dark:text-white sm:text-3xl lg:text-4xl">
+              About Us
+            </h2>
+            <p className="mx-auto max-w-3xl text-base text-slate-600 dark:text-slate-400 lg:text-lg">
+              We are a platform that connects students from universities around
+              the world to collaborate on academic projects. With a mission to
+              create an inclusive and innovative learning environment.
+            </p>
+          </motion.div>
 
-        <div className="flex justify-center">
-          <MapChart />
-        </div>
+          {/* Glassmorphism Stats */}
+          <motion.div
+            variants={containerVariants}
+            className="grid grid-cols-1 gap-6 sm:grid-cols-3"
+          >
+            {stats.map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                variants={itemVariants}
+                className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/80 p-8 shadow-lg shadow-slate-200/50 backdrop-blur-sm transition-all duration-300 ease-in-out hover:shadow-xl hover:shadow-primary-500/10 hover:scale-[1.02] dark:border-slate-700/80 dark:bg-slate-800/50 dark:shadow-slate-900/50 dark:hover:border-primary-500/20"
+              >
+                <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-primary-100/50 dark:bg-primary-900/20" />
+                <div className="relative">
+                  <p className="text-3xl font-bold text-primary-600 dark:text-primary-400 sm:text-4xl">
+                    <AnimatedCounter end={stat.value} suffix={stat.suffix} />
+                  </p>
+                  <p className="mt-1 text-sm font-medium text-slate-600 dark:text-slate-400">
+                    {stat.label}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* About Text */}
+          <motion.div
+            variants={itemVariants}
+            className="mx-auto max-w-3xl text-center"
+          >
+            <p className="text-base leading-relaxed text-slate-600 dark:text-slate-400 lg:text-lg">
+              We take pride in our growing community with{" "}
+              <strong className="text-slate-900 dark:text-white">
+                10,000+ students
+              </strong>{" "}
+              from various universities worldwide who have joined and collaborated
+              on numerous academic projects. With more than{" "}
+              <strong className="text-slate-900 dark:text-white">
+                500 completed projects
+              </strong>
+              , we remain committed to fostering an inclusive and innovative
+              learning environment.
+            </p>
+          </motion.div>
+
+          {/* Map Chart */}
+          <motion.div
+            variants={itemVariants}
+            className="flex justify-center"
+          >
+            <div className="w-full overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-4 shadow-lg shadow-slate-200/50 dark:border-slate-700/80 dark:bg-slate-800/50 dark:shadow-slate-900/50">
+              <MapChart />
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
-    </>
+    </div>
   );
 }

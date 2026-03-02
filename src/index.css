@@ -3,50 +3,92 @@
 
 @theme {
   --font-jakarta-sans: "Plus Jakarta Sans", sans-serif;
-  --color-primary-50: #e6f0fa;
-  --color-primary-100: #cce0f5;
-  --color-primary-200: #99c2eb;
-  --color-primary-300: #66a3e0;
-  --color-primary-400: #3385d6;
-  --color-primary-500: #0066cc;
-  --color-primary-600: #005bb8;
-  --color-primary-700: #004999;
-  --color-primary-800: #003d7a; /* your base color */
-  --color-primary-900: #002d59;
+  --color-primary-50: #eef6ff;
+  --color-primary-100: #d9ebff;
+  --color-primary-200: #bcdaff;
+  --color-primary-300: #8ec2ff;
+  --color-primary-400: #599eff;
+  --color-primary-500: #3377ff;
+  --color-primary-600: #1d4ed8;
+  --color-primary-700: #114d91;
+  --color-primary-800: #0f3d7a;
+  --color-primary-900: #0f3460;
 
   /* breakpoint */
   --breakpoint-sm: 343px;
   --breakpoint-md: 600px;
   --breakpoint-lg: 960px;
   --breakpoint-xl: 1280px;
+
+  /* Design system - spacing */
+  --section-padding: 5rem;
+  --container-max: 80rem;
+
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 300ms ease-in-out;
+  --transition-slow: 500ms ease-in-out;
+}
+
+/* Dark mode variables */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+  }
+}
+
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
 }
 
 @utility container {
-  padding-inline: 10px;
+  width: 100%;
+  max-width: 80rem;
+  padding-inline: 1rem;
   margin-inline: auto;
 
   @variant sm {
-    padding-inline: 20px;
+    padding-inline: 1.5rem;
   }
 
   @variant md {
-    padding-inline: 10px;
+    padding-inline: 2rem;
   }
 
   @variant lg {
-    padding-inline: 80px;
+    padding-inline: 4rem;
   }
 
   @variant xl {
-    padding-inline: 120px;
+    padding-inline: 6rem;
   }
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   .font-outline-2 {
     -webkit-text-stroke: 2px black;
   }
   .font-outline-4 {
     -webkit-text-stroke: 4px black;
+  }
+  /* Glass morphism */
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .glass-dark {
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 }
