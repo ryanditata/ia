@@ -38,12 +38,12 @@ export default function Navbar() {
       "cursor-pointer text-sm font-medium transition-all duration-300 ease-in-out rounded-lg px-3 py-2";
     if (scrolled) {
       return isActive
-        ? "text-primary-600 bg-primary-50 dark:bg-primary-900/30 dark:text-primary-400"
-        : "text-slate-600 hover:text-primary-600 hover:bg-primary-50/50 dark:text-slate-300 dark:hover:text-primary-400 dark:hover:bg-primary-900/20";
+        ? "text-primary-600 dark:text-primary-400"
+        : "text-slate-600 hover:text-primary-600 dark:text-slate-300 dark:hover:text-primary-400";
     }
     return isActive
-      ? "text-white bg-white/20"
-      : "text-white/90 hover:text-white hover:bg-white/10";
+      ? "text-white"
+      : "text-white/90 hover:text-white";
   };
 
   return (
@@ -60,7 +60,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <ul className="hidden items-center gap-1 md:flex">
+        <ul className="hidden items-center gap-4 md:flex cursor-pointer">
           {navItems.map((item) => (
             <li key={item.to}>
               <Link

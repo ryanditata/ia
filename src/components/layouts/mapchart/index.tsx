@@ -11,7 +11,6 @@ interface Country {
   moa: number;
   ia: number;
 }
-// Data mentah (bisa diganti dari API atau props)
 
 const MapChart = () => {
   const chartRef = useRef<HTMLDivElement>(null);
@@ -21,7 +20,7 @@ const MapChart = () => {
     const fetchPartners = async () => {
       try {
         const data = await getCountries();
-        setCountries(data); // pastikan API return array partner
+        setCountries(data);
       } catch (error) {
         console.error("Failed to fetch partners", error);
       }
@@ -124,7 +123,6 @@ const MapChart = () => {
       });
     });
 
-    // Panggil generateCooperationMap
     const cooperationData = generateCooperationMap(countries);
 
     pointSeries.data.setAll(
