@@ -53,13 +53,13 @@ export default function News() {
           {/* News Cards */}
           <motion.div
             variants={containerVariants}
-            className="grid grid-cols-1 gap-6 lg:grid-cols-3"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {newsData.map((news, index) => (
               <motion.div
                 key={index}
                 variants={cardVariants}
-                className="group flex flex-col rounded-2xl border border-slate-200/80 bg-white p-6 shadow-lg shadow-slate-200/50 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/10 dark:border-slate-700/80 dark:bg-slate-800/50 dark:shadow-slate-900/50"
+                className="group flex flex-col rounded-2xl border border-slate-200/80 bg-gradient-to-br from-primary-50 to-white dark:from-slate-800 dark:to-slate-900 p-6 shadow-lg shadow-slate-200/50 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/10 dark:border-slate-700/80 dark:bg-slate-800/50 dark:shadow-slate-900/50"
               >
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-100 text-primary-600 dark:bg-primary-900/50 dark:text-primary-400">
                   <Newspaper size={24} strokeWidth={2} />

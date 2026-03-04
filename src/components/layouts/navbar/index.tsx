@@ -78,7 +78,7 @@ export default function Navbar() {
         <div className="hidden items-center gap-4 md:flex">
           <a
             href="https://lkui.dinus.id/login"
-            className="group relative rounded-full bg-primary-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary-500/25 transition-all duration-300 ease-in-out hover:bg-primary-700 hover:shadow-primary-500/40 hover:scale-[1.02] active:scale-[0.98]"
+            className="group relative rounded-full bg-primary-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary-500/25 transition-all duration-300 ease-in-out hover:bg-primary-700 hover:shadow-primary-500/40 active:scale-[0.98]"
           >
             <span className="relative z-10">Login</span>
           </a>

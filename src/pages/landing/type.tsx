@@ -52,7 +52,7 @@ export default function Type() {
           {/* Cards Grid */}
           <motion.div
             variants={containerVariants}
-            className="grid grid-cols-1 gap-6 lg:grid-cols-3"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {cooperationTypes.map((item, index) => {
               const Icon = item.icon;

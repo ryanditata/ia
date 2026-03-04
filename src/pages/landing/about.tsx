@@ -75,7 +75,7 @@ export default function About() {
           {/* Glassmorphism Stats */}
           <motion.div
             variants={containerVariants}
-            className="grid grid-cols-1 gap-6 lg:grid-cols-3"
+            className="grid grid-cols-1 lg:grid-cols-3 gap-6"
           >
             {stats.map((stat, index) => (
               <motion.div
@@ -121,7 +121,7 @@ export default function About() {
             variants={itemVariants}
             className="flex justify-center"
           >
-            <div className="w-full overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-4 lg:p-7 shadow-lg shadow-slate-200/50 dark:border-slate-700/80 dark:bg-slate-800/50 dark:shadow-slate-900/50">
+            <div className="w-full overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-2 md:p-24 lg:p-7 shadow-lg shadow-slate-200/50 dark:border-slate-700/80 dark:bg-slate-800/50 dark:shadow-slate-900/50">
               <MapChart />
             </div>
           </motion.div>
