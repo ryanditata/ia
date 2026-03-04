@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-scroll";
-import { Menu, X } from "lucide-react";
+import { TextAlignEnd, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "@/assets/img/logo.png";
 import { useActiveSection } from "@/hooks/useActiveSection";
@@ -94,7 +94,7 @@ export default function Navbar() {
           }`}
           aria-label="Toggle menu"
         >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+          {isOpen ? <X size={24} /> : <TextAlignEnd size={24} />}
         </button>
       </div>
 
