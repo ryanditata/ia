@@ -1,4 +1,5 @@
 import { MapPin, Phone, Mail, Instagram } from "lucide-react";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 export default function Footer() {
   return (
@@ -74,10 +75,12 @@ export default function Footer() {
 
         <div className="my-6 border-t border-slate-700"></div>
 
-        <div className="flex items-center justify-center text-sm text-slate-400 -mb-5">
+        <div className="flex items-center justify-between text-sm text-slate-400 -mb-5">
           <p>
             © {new Date().getFullYear()} Dian Nuswantoro University. All rights reserved.
           </p>
+
+          <ThemeToggle />
         </div>
       </div>
     </footer>
