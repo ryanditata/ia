@@ -4,7 +4,7 @@ import * as am5map from "@amcharts/amcharts5/map";
 import * as am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import am5geodata_continentsLow from "@amcharts/amcharts4-geodata/continentsLow";
 import { generateCooperationMap } from "@/constants/worldMap";
-import { getCountries } from "@/service/partner/getCountries";
+import { getAgreements } from "@/service/partner/getCountries";
 
 interface Country {
   mou: number;
@@ -19,7 +19,7 @@ const MapChart = () => {
   useEffect(() => {
     const fetchPartners = async () => {
       try {
-        const data = await getCountries();
+        const data = await getAgreements();
         setCountries(data);
       } catch (error) {
         console.error("Failed to fetch partners", error);

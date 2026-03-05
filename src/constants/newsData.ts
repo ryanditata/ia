@@ -29,5 +29,4 @@ export const newsData = [
     description:
       "Students can now apply for internships abroad through our global partner institutions.",
   },
-  // Tambahkan data lain sesuai kebutuhan
 ];

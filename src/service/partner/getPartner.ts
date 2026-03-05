@@ -1,17 +1,28 @@
 import { axiosInstance } from "@/lib/axios";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getPartners = async (): Promise<any> => {
+export const getPartners = async (
+  page = 1,
+  search = "",
+  country = ""
+): Promise<any> => {
   try {
     const res = await axiosInstance.get(
       "https://lkui.dinus.id/api/v1/partners",
+      {
+        params: {
+          page,
+          search,
+          country,
+          per_page: 10,
+        },
+      }
     );
+
     return res.data;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error(
       "Error fetching partners:",
-      error.response || error.message || error,
+      error.response || error.message || error
     );
     throw new Error("Failed to get partners");
   }

@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, ChevronLeft, ChevronRight, BadgeCheck, ChevronDown } from "lucide-react";
 import { getPartners } from "@/service/partner/getPartner";
+import { getCountries } from "@/service/partner/getCountries";
 import { TableRowSkeleton } from "@/components/ui/Skeleton";
 
 interface Partner {
@@ -12,21 +13,27 @@ interface Partner {
   country: string;
 }
 
-const ITEMS_PER_PAGE = 10;
-
 export default function Partner() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [countryFilter, setCountryFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalData, setTotalData] = useState(0);
+  const [countries, setCountries] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchPartners = async () => {
       try {
-        const res = await getPartners();
-        const data = Array.isArray(res) ? res : (res?.data ?? []);
-        setPartners(data);
+        setLoading(true);
+
+        const res = await getPartners(currentPage, search, countryFilter);
+
+        setPartners(res.data);
+        setTotalPages(res.last_page);
+        setTotalData(res.total);
+
       } catch (error) {
         console.error("Failed to fetch partners", error);
         setPartners([]);
@@ -34,7 +41,17 @@ export default function Partner() {
         setLoading(false);
       }
     };
+
     fetchPartners();
+  }, [currentPage, search, countryFilter]);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      const res = await getCountries();
+      setCountries(res);
+    };
+
+    fetchCountries();
   }, []);
 
   const toTitleCase = (text?: string) => {
@@ -43,30 +60,6 @@ export default function Partner() {
       .toLowerCase()
       .replace(/\b\w/g, (char) => char.toUpperCase());
   };
-
-  const countries = useMemo(() => {
-    const set = new Set(partners.map((p) => toTitleCase(p.country)).filter(Boolean));
-    return Array.from(set).sort();
-  }, [partners]);
-
-  const filteredPartners = useMemo(() => {
-    return partners.filter((p) => {
-      const matchSearch =
-        !search ||
-        toTitleCase(p.name).toLowerCase().includes(search.toLowerCase()) ||
-        toTitleCase(p.city).toLowerCase().includes(search.toLowerCase()) ||
-        toTitleCase(p.country).toLowerCase().includes(search.toLowerCase());
-      const matchCountry =
-        !countryFilter || toTitleCase(p.country) === countryFilter;
-      return matchSearch && matchCountry;
-    });
-  }, [partners, search, countryFilter]);
-
-  const totalPages = Math.ceil(filteredPartners.length / ITEMS_PER_PAGE);
-  const paginatedPartners = useMemo(() => {
-    const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    return filteredPartners.slice(start, start + ITEMS_PER_PAGE);
-  }, [filteredPartners, currentPage]);
 
   return (
     <div
@@ -92,8 +85,8 @@ export default function Partner() {
           </div>
 
           {/* Search & Filter */}
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="relative flex-1 sm:max-w-md">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="relative w-full md:max-w-md">
               <Search
                 className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400"
                 strokeWidth={2}
@@ -109,15 +102,9 @@ export default function Partner() {
                 className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-12 pr-4 text-sm text-slate-900 outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
               />
             </div>
-            <div className="flex items-center gap-2">
-              <label
-                htmlFor="country-filter"
-                className="text-sm font-medium text-slate-600 dark:text-slate-400"
-              >
-                Country:
-              </label>
 
-              <div className="relative">
+            <div className="flex flex-col gap-2 md:flex-row md:items-center">
+              <div className="relative w-full md:w-56">
                 <select
                   id="country-filter"
                   value={countryFilter}
@@ -125,16 +112,16 @@ export default function Partner() {
                     setCountryFilter(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="appearance-none rounded-xl border border-slate-200 bg-white pl-4 pr-10 py-3 text-sm text-slate-900 outline-none transition-all duration-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white cursor-pointer"
+                  className="w-full appearance-none rounded-xl border border-slate-200 bg-white py-3 pl-4 pr-10 text-sm text-slate-900 outline-none transition-all duration-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white cursor-pointer"
                 >
-                  <option value="">All countries</option>
+                  <option value="">All Countries</option>
+
                   {countries.map((c) => (
                     <option key={c} value={c}>
-                      {c}
+                      {toTitleCase(c)}
                     </option>
                   ))}
                 </select>
-
                 <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
               </div>
             </div>
@@ -194,7 +181,7 @@ export default function Partner() {
                     </thead>
                     <tbody className="divide-y divide-slate-100 dark:divide-slate-700/50">
                       <AnimatePresence mode="popLayout">
-                        {paginatedPartners.length === 0 ? (
+                        {partners.length === 0 ? (
                           <tr>
                             <td
                               colSpan={5}
@@ -204,7 +191,7 @@ export default function Partner() {
                             </td>
                           </tr>
                         ) : (
-                          paginatedPartners.map((partner, index) => (
+                          partners.map((partner, index) => (
                             <motion.tr
                               key={partner.id}
                               initial={{ opacity: 0 }}
@@ -215,7 +202,7 @@ export default function Partner() {
                             >
                               <td className="px-6 py-5">
                                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary-100 text-sm font-medium text-primary-600 dark:bg-primary-900/50 dark:text-primary-400">
-                                  {(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
+                                  {(currentPage - 1) * 10 + index + 1}
                                 </span>
                               </td>
                               <td className="px-6 py-5">
@@ -251,16 +238,16 @@ export default function Partner() {
                     <p className="text-sm text-slate-600 dark:text-slate-400">
                       Showing{" "}
                       <span className="font-medium">
-                        {(currentPage - 1) * ITEMS_PER_PAGE + 1}
+                        {(currentPage - 1) * 10 + 1}
                       </span>{" "}
                       to{" "}
                       <span className="font-medium">
                         {Math.min(
-                          currentPage * ITEMS_PER_PAGE,
-                          filteredPartners.length
+                          currentPage * 10,
+                          totalData
                         )}
                       </span>{" "}
-                      of <span className="font-medium">{filteredPartners.length}</span>{" "}
+                      of <span className="font-medium">{totalData}</span>{" "}
                       partners
                     </p>
                     <div className="flex items-center gap-2">

@@ -1,18 +1,30 @@
 import { axiosInstance } from "@/lib/axios";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getCountries = async (): Promise<any> => {
+export const getAgreements = async () => {
   try {
-    const res = await axiosInstance.get(
-      "https://lkui.dinus.id/api/v1/agreements"
-    );
+    const res = await axiosInstance.get("https://lkui.dinus.id/api/v1/agreements");
     return res.data;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error(
-      "Error fetching partners:",
+      "Error fetching agreements:",
       error.response || error.message || error
     );
-    throw new Error("Failed to get partners");
+    throw new Error("Failed to get agreements");
+  }
+};
+
+export const getCountries = async (): Promise<string[]> => {
+  try {
+    const data = await getAgreements();
+
+    const countries = Object.keys(data).sort();
+
+    return countries;
+  } catch (error: any) {
+    console.error(
+      "Error fetching countries:",
+      error.response || error.message || error
+    );
+    throw new Error("Failed to get countries");
   }
 };
