@@ -1,6 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 @import "tailwindcss";
 
+/* Class-based dark mode untuk ThemeToggle (next-themes) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-jakarta-sans: "Plus Jakarta Sans", sans-serif;
   --color-primary-50: #eef6ff;
@@ -30,7 +33,23 @@
   --transition-slow: 500ms ease-in-out;
 }
 
-/* Dark mode variables */
+/* Theme variables - light (default) */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+}
+
+/* Theme variables - dark (class dari ThemeToggle) */
+.dark {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+}
+
+/* Theme variables - system preference (saat tidak ada class light/dark) */
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
     --bg-primary: #0f172a;
@@ -38,13 +57,6 @@
     --text-primary: #f1f5f9;
     --text-secondary: #94a3b8;
   }
-}
-
-:root {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --text-primary: #0f172a;
-  --text-secondary: #64748b;
 }
 
 @utility container {
