@@ -13,9 +13,13 @@ export default function ThemeToggle() {
 
   if (!mounted) return null;
 
+  const activeClass = "bg-slate-800 text-white";
+  const baseClass =
+    "flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-slate-800 transition rounded-lg cursor-pointer";
+
   return (
     <div className="relative">
-      {/* Button */}
+      {/* Toggle Button */}
       <button
         onClick={() => setOpen(!open)}
         className="flex items-center justify-center rounded-lg border border-slate-700 p-2 text-slate-300 hover:bg-slate-700/50 transition cursor-pointer"
@@ -27,13 +31,13 @@ export default function ThemeToggle() {
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute bottom-10 right-0 w-36 rounded-xl border border-slate-700 bg-slate-900 shadow-lg">
+        <div className="absolute bottom-10 right-0 w-36 rounded-xl border border-slate-700 bg-slate-900 shadow-lg p-1 space-y-1">
           <button
             onClick={() => {
               setTheme("light");
               setOpen(false);
             }}
-            className="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-slate-800 cursor-pointer"
+            className={`${baseClass} ${theme === "light" ? activeClass : ""}`}
           >
             <Sun size={16} /> Light
           </button>
@@ -43,7 +47,7 @@ export default function ThemeToggle() {
               setTheme("dark");
               setOpen(false);
             }}
-            className="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-slate-800 cursor-pointer"
+            className={`${baseClass} ${theme === "dark" ? activeClass : ""}`}
           >
             <Moon size={16} /> Dark
           </button>
@@ -53,7 +57,7 @@ export default function ThemeToggle() {
               setTheme("system");
               setOpen(false);
             }}
-            className="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-slate-800 cursor-pointer"
+            className={`${baseClass} ${theme === "system" ? activeClass : ""}`}
           >
             <Laptop size={16} /> System
           </button>
