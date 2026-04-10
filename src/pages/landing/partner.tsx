@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, ChevronLeft, ChevronRight, BadgeCheck, ChevronDown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { getPartners } from "@/service/partner/getPartner";
 import { getCountries } from "@/service/partner/getCountries";
 import { TableRowSkeleton } from "@/components/ui/Skeleton";
@@ -15,6 +16,7 @@ interface Partner {
 
 export default function Partner() {
   const [partners, setPartners] = useState<Partner[]>([]);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [countryFilter, setCountryFilter] = useState("");
@@ -194,6 +196,7 @@ export default function Partner() {
                           partners.map((partner, index) => (
                             <motion.tr
                               key={partner.id}
+                              onClick={() => navigate(`/partners/${partner.id}`)}
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               exit={{ opacity: 0 }}
