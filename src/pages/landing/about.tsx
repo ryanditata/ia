@@ -81,7 +81,7 @@ export default function About() {
               <motion.div
                 key={stat.label}
                 variants={itemVariants}
-                className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/80 p-8 shadow-lg shadow-slate-200/50 backdrop-blur-sm transition-all duration-300 ease-in-out hover:shadow-xl hover:shadow-primary-500/10 hover:scale-[1.02] dark:border-slate-700/80 dark:bg-slate-800/50 dark:shadow-slate-900/50 dark:hover:border-primary-500/20"
+                className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/80 p-8 shadow-lg shadow-slate-200/50 backdrop-blur-sm transition-all duration-300 ease-in-out hover:shadow-xl hover:shadow-primary-500/10 dark:border-slate-700/80 dark:bg-slate-800/50 dark:shadow-slate-900/50 dark:hover:border-primary-500/20"
               >
                 <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-primary-100/50 dark:bg-primary-900/20" />
                 <div className="relative">

@@ -59,7 +59,7 @@ export default function News() {
               <motion.div
                 key={index}
                 variants={cardVariants}
-                className="group flex flex-col rounded-2xl border border-slate-200/80 bg-gradient-to-br from-primary-50 to-white dark:from-slate-800 dark:to-slate-900 p-6 shadow-lg shadow-slate-200/50 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/10 dark:border-slate-700/80 dark:bg-slate-800/50 dark:shadow-slate-900/50"
+                className="group flex flex-col rounded-2xl border border-slate-200/80 bg-gradient-to-br from-primary-50 to-white dark:from-slate-800 dark:to-slate-900 p-6 shadow-lg shadow-slate-200/50 transition-all duration-300 ease-in-out hover:shadow-xl hover:shadow-primary-500/10 dark:border-slate-700/80 dark:bg-slate-800/50 dark:shadow-slate-900/50"
               >
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-100 text-primary-600 dark:bg-primary-900/50 dark:text-primary-400">
                   <Newspaper size={24} strokeWidth={2} />

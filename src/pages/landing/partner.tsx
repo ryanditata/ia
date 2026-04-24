@@ -210,7 +210,7 @@ export default function Partner() {
                               </td>
                               <td className="px-6 py-5">
                                 <div className="flex items-center gap-2">
-                                  <span className="inline-flex items-center gap-2 rounded-full border border-primary-200/80 bg-primary-50/80 px-4 py-2 text-sm font-medium text-primary-700 shadow-sm transition-all duration-300 dark:border-primary-800 dark:bg-primary-900/30 dark:text-primary-300">
+                                  <span className="inline-flex items-center gap-2 rounded-full border border-primary-200/80 bg-primary-50/80 px-4 py-2 text-sm font-medium text-primary-700 transition-all duration-300 dark:border-primary-800 dark:bg-primary-900/30 dark:text-primary-300">
                                     <BadgeCheck size={16} strokeWidth={2.5} />
                                     {toTitleCase(partner.name)}
                                   </span>

@@ -1,10 +1,9 @@
-import Footer from "@/components/layouts/footer";
-import About from "./about";
-import Contact from "./contact";
 import Hero from "./hero";
-import News from "./news";
-import Partner from "./partner";
+import About from "./about";
 import Type from "./type";
+import Partner from "./partner";
+import News from "./news";
+import Contact from "./contact";
 
 function LandingPage() {
   return (
@@ -15,7 +14,6 @@ function LandingPage() {
       <Partner />
       <News />
       <Contact />
-      <Footer />
     </div>
   );
 }

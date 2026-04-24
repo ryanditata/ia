@@ -60,7 +60,7 @@ export default function Type() {
                 <motion.div
                   key={index}
                   variants={cardVariants}
-                  className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-lg shadow-slate-200/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/10 dark:border-slate-700/80 dark:bg-slate-800/50 dark:shadow-slate-900/50"
+                  className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-lg shadow-slate-200/50 transition-all duration-300  hover:shadow-xl hover:shadow-primary-500/10 dark:border-slate-700/80 dark:bg-slate-800/50 dark:shadow-slate-900/50"
                 >
                   {/* Image Section */}
                   <div className="relative h-44 w-full bg-gradient-to-br from-primary-50 to-white dark:from-slate-800 dark:to-slate-900">
