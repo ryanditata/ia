@@ -24,6 +24,11 @@ export default function Footer() {
                   KNB Scholarship
                 </a>
               </li>
+              <li>
+                <a href="" className="hover:text-white transition-colors cursor-pointer">
+                  Garuda Scholarship
+                </a>
+              </li>
             </ul>
           </div>
 

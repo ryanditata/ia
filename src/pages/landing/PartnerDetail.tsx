@@ -105,7 +105,7 @@ export default function PartnerDetail() {
       <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <button
           onClick={() => navigate(-1)}
-          className="mb-6 cursor-pointer dark:text-slate-300"
+          className="mb-4 cursor-pointer dark:text-slate-300"
         >
           <ChevronLeft size={24} />
         </button>
@@ -116,7 +116,7 @@ export default function PartnerDetail() {
               <div className="absolute inset-0 bg-[linear-gradient(to_left,#e2e8f0_2px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_2px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,#000_60%,transparent_100%)] dark:bg-[linear-gradient(to_left,#334155_2px,transparent_1px),linear-gradient(to_bottom,#334155_2px,transparent_1px)]" />
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.05),transparent_50%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.1),transparent_50%)]" />
               <div className="relative z-10">
-                <p className="text-lg font-semibold uppercase tracking-[0.15em] text-blue-700 dark:text-blue-400">
+                <p className="text-lg font-semibold uppercase tracking-[0.15em] text-primary-600 dark:text-primary-400">
                   International Partnership Profile
                 </p>
                 <h1 className="mt-2 max-w-3xl text-2xl font-semibold leading-tight text-slate-900 dark:text-white sm:text-4xl">
@@ -140,16 +140,16 @@ export default function PartnerDetail() {
                   </div>
                   <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
                     <Tag
-                      icon={<Building2 size={14} />}
-                      value={partner.category || "-"}
+                      icon={<Building2 size={16} />}
+                      value={partner.category ? String(partner.category).toUpperCase() : "-"}
                     />
                     <Tag
-                      icon={<Ribbon size={14} />}
+                      icon={<Ribbon size={16} />}
                       value={partner.level ? String(partner.level).toUpperCase() : "-"}
                     />
                     <Tag
-                      icon={<MapPin size={14} />}
-                      value={`${partner.city && partner.city !== "-" ? `${partner.city}, ` : ""}${partner.country || "-"}`}
+                      icon={<MapPin size={16} />}
+                      value={`${partner.city && partner.city !== "-" ? `${partner.city}, ` : ""}${partner.country ? String(partner.country).toUpperCase() : "-"}`}
                     />
                   </div>
                 </div>
@@ -160,7 +160,7 @@ export default function PartnerDetail() {
           <div className="space-y-8">
             <Section
               title="Memorandum of Understanding"
-              icon={<ScrollText size={24} className="text-blue-700 dark:text-blue-400" />}
+              icon={<ScrollText size={24} className="text-[#6771dc] dark:text-indigo-400" />}
               count={partner.mous?.length}
             >
               <DocumentList docs={partner.mous} type="MoU" />
@@ -168,7 +168,7 @@ export default function PartnerDetail() {
 
             <Section
               title="Memorandum of Agreement"
-              icon={<FileSignature size={24} className="text-emerald-700 dark:text-emerald-400" />}
+              icon={<FileSignature size={24} className="text-[#67b7dc] dark:text-sky-400" />}
               count={partner.moas?.length}
             >
               <DocumentList docs={partner.moas} type="MoA" />
@@ -176,7 +176,7 @@ export default function PartnerDetail() {
 
             <Section
               title="Implementation Arrangement"
-              icon={<Landmark size={24} className="text-amber-700 dark:text-amber-400" />}
+              icon={<Landmark size={24} className="text-[#a367dc] dark:text-purple-400" />}
               count={partner.ias?.length}
             >
               <DocumentList docs={partner.ias} type="IA" />
@@ -190,10 +190,10 @@ export default function PartnerDetail() {
 
 function PartnerDetailSkeleton() {
   return (
-    <div className="min-h-screen bg-slate-50 pb-14 pt-8 dark:bg-slate-950">
+    <div className="min-h-screen bg-slate-50 pb-14 pt-24 dark:bg-slate-950">
       <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Back Button Skeleton */}
-        <div className="mb-6 h-8 w-10 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
+        <div className="mb-4 h-8 w-10 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
 
         <div className="space-y-8">
           {/* Header Card Skeleton */}
@@ -319,16 +319,16 @@ function DocumentCard({ doc, type }: { doc: any; type: string }) {
 
   const typeConfig = {
     MoU: {
-      icon: <ScrollText size={16} className="text-blue-700 dark:text-blue-400" />,
-      chip: "bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300",
+      icon: <ScrollText size={16} className="text-[#6771dc] dark:text-indigo-400" />,
+      chip: "bg-[#6771dc]/10 text-[#6771dc] dark:bg-[#6771dc]/25 dark:text-indigo-300",
     },
     MoA: {
-      icon: <FileSignature size={16} className="text-emerald-700 dark:text-emerald-400" />,
-      chip: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300",
+      icon: <FileSignature size={16} className="text-[#67b7dc] dark:text-sky-400" />,
+      chip: "bg-[#67b7dc]/10 text-[#67b7dc] dark:bg-[#67b7dc]/25 dark:text-sky-300",
     },
     IA: {
-      icon: <Landmark size={16} className="text-amber-700 dark:text-amber-400" />,
-      chip: "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300",
+      icon: <Landmark size={16} className="text-[#a367dc] dark:text-purple-400" />,
+      chip: "bg-[#a367dc]/10 text-[#a367dc] dark:bg-[#a367dc]/25 dark:text-purple-300",
     },
   } as const;
 
@@ -340,14 +340,15 @@ function DocumentCard({ doc, type }: { doc: any; type: string }) {
         hidden: { opacity: 0, y: 14 },
         show: { opacity: 1, y: 0 },
       }}
-      className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm transition-shadow hover:shadow-md dark:border-slate-700 dark:bg-slate-900 cursor-pointer"
+      className="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-5 pt-12 shadow-sm transition-shadow hover:shadow-md dark:border-slate-700 dark:bg-slate-900 cursor-pointer"
     >
+        <div className={`absolute left-0 top-0 flex items-center gap-2 rounded-br-lg px-3 py-1.5 text-xs font-bold uppercase tracking-wider ${config.chip}`}>
+          {config.icon}
+          {type}
+        </div>
+        
       <div className="mb-3 flex items-start justify-between gap-4">
-        <div className="space-y-2">
-          <div className={`inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-[11px] font-semibold ${config.chip}`}>
-            {config.icon}
-            {type}
-          </div>
+        <div className="flex-1">
           <h4 className="line-clamp-2 text-base font-semibold leading-snug text-slate-900 dark:text-slate-100">
             {doc.title || "Untitled document"}
           </h4>

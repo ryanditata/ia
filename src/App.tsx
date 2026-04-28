@@ -24,7 +24,6 @@ function App() {
         <Route path="/partners/:id" element={<PartnerDetail />} />
       </Route>
 
-      {/* Jika nanti ada halaman Login/404 yang TIDAK butuh Navbar, taruh di luar MainLayout seperti ini: */}
       {/* <Route path="/login" element={<LoginPage />} /> */}
     </Routes>
   );
