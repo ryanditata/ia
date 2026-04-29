@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@amcharts/amcharts4-geodata": "^4.1.31",
-    "@amcharts/amcharts5": "^5.13.4",
+    "@amcharts/amcharts5": "^5.17.2",
     "@tailwindcss/vite": "^4.1.11",
     "framer-motion": "^12.34.3",
     "lucide-react": "^0.575.0",

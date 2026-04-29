@@ -90,7 +90,7 @@ export default function PartnerDetail() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => navigate(-1)}
-            className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-blue-700 px-6 py-3 text-sm font-semibold text-white shadow-md transition-colors hover:bg-blue-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
+            className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-md transition-colors hover:bg-primary-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
           >
             <ChevronLeft size={18} />
             Return to Partners List
@@ -117,7 +117,7 @@ export default function PartnerDetail() {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.05),transparent_50%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.1),transparent_50%)]" />
               <div className="relative z-10">
                 <p className="text-lg font-semibold uppercase tracking-[0.15em] text-primary-600 dark:text-primary-400">
-                  International Partnership Profile
+                  {partner.level ? String(partner.level).toUpperCase() : "-"} Partnership Profile
                 </p>
                 <h1 className="mt-2 max-w-3xl text-2xl font-semibold leading-tight text-slate-900 dark:text-white sm:text-4xl">
                   {partner.name}

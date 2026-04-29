@@ -271,3 +271,85 @@ export function generateCooperationMap(
     value: total,
   }));
 }
+
+const countryCoordinates: Record<string, { latitude: number; longitude: number }> = {
+  China: { latitude: 35.8617, longitude: 104.1954 },
+  "Hong Kong": { latitude: 22.3193, longitude: 114.1694 },
+  India: { latitude: 20.5937, longitude: 78.9629 },
+  Indonesia: { latitude: -0.7893, longitude: 113.9213 },
+  Japan: { latitude: 36.2048, longitude: 138.2529 },
+  Malaysia: { latitude: 4.2105, longitude: 101.9758 },
+  Philippines: { latitude: 12.8797, longitude: 121.7740 },
+  Singapore: { latitude: 1.3521, longitude: 103.8198 },
+  "South Korea": { latitude: 35.9078, longitude: 127.7669 },
+  Taiwan: { latitude: 23.6978, longitude: 120.9605 },
+  Thailand: { latitude: 15.8700, longitude: 100.9925 },
+  "Timor-Leste": { latitude: -8.8742, longitude: 125.7275 },
+  Vietnam: { latitude: 14.0583, longitude: 108.2772 },
+
+  "Bosnia And Herzegovina": { latitude: 43.9159, longitude: 17.6791 },
+  Croatia: { latitude: 45.1000, longitude: 15.2000 },
+  Germany: { latitude: 51.1657, longitude: 10.4515 },
+  Greece: { latitude: 39.0742, longitude: 21.8243 },
+  Malta: { latitude: 35.9375, longitude: 14.3978 },
+  Netherlands: { latitude: 52.1326, longitude: 5.2913 },
+  Norway: { latitude: 60.4720, longitude: 8.4689 },
+  Poland: { latitude: 51.9194, longitude: 19.1451 },
+  Turkey: { latitude: 38.9637, longitude: 35.2433 },
+  "United Kingdom": { latitude: 55.3781, longitude: -3.4360 },
+
+  "United States": { latitude: 37.0902, longitude: -95.7129 },
+};
+
+export function generateCooperationMapByCountry(
+  rawData: Record<string, { mou: number; moa: number; ia: number }>
+) {
+  const mapPoints: Array<{ 
+    title: string; 
+    latitude: number; 
+    longitude: number; 
+    value: number;
+    mou: number; 
+    moa: number; 
+    ia: number; 
+  }> = [];
+  
+  const normalizedCoords: Record<string, { latitude: number; longitude: number }> = {};
+  for (const [key, value] of Object.entries(countryCoordinates)) {
+    normalizedCoords[key.trim().toLowerCase()] = value;
+  }
+
+  for (const [countryName, values] of Object.entries(rawData)) {
+    const cleanCountryName = countryName.trim().toLowerCase();
+    if (cleanCountryName === "total") continue;
+
+    const coords = normalizedCoords[cleanCountryName];
+    
+    if (coords) {
+      const total = values.mou + values.moa + values.ia;
+      
+      if (total > 0) {
+        const titleCaseName = countryName
+          .trim()
+          .toLowerCase()
+          .split(' ')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+
+        mapPoints.push({
+          title: titleCaseName,
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+          value: total,
+          mou: values.mou,
+          moa: values.moa, 
+          ia: values.ia,  
+        });
+      }
+    } else {
+      console.warn(`Koordinat untuk negara "${countryName}" belum tersedia.`);
+    }
+  }
+
+  return mapPoints;
+}
