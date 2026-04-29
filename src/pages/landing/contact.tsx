@@ -54,7 +54,7 @@ export default function Contact() {
                 <input
                   id="name"
                   type="text"
-                  placeholder="John Doe"
+                  placeholder="Enter your full name and credentials..."
                   required
                   className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-slate-900 outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
                 />
@@ -69,7 +69,7 @@ export default function Contact() {
                 <input
                   id="email"
                   type="email"
-                  placeholder="john@example.com"
+                  placeholder="representative@institution.edu"
                   required
                   className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-slate-900 outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
                 />
@@ -83,7 +83,7 @@ export default function Contact() {
                 </label>
                 <textarea
                   id="message"
-                  placeholder="How can we help you?"
+                  placeholder="Tell us about your collaboration proposal or inquiry..."
                   rows={5}
                   required
                   className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-slate-900 outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
