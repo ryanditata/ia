@@ -3,7 +3,9 @@ import { axiosInstance } from "@/lib/axios";
 export const getPartners = async (
   page = 1,
   search = "",
-  country = ""
+  country = "",
+  city = "",
+  category = ""
 ): Promise<any> => {
   try {
     const res = await axiosInstance.get(
@@ -13,6 +15,8 @@ export const getPartners = async (
           page,
           search,
           country,
+          city,
+          category,
           per_page: 10,
         },
       }

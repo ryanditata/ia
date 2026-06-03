@@ -28,3 +28,29 @@ export const getCountries = async (): Promise<string[]> => {
     throw new Error("Failed to get countries");
   }
 };
+
+export const getCities = async (): Promise<string[]> => {
+  try {
+    const res = await axiosInstance.get("https://lkui.dinus.id/api/v1/cities");
+    return res.data;
+  } catch (error: any) {
+    console.error(
+      "Error fetching cities:",
+      error.response || error.message || error
+    );
+    return [];
+  }
+};
+
+export const getCategories = async (): Promise<any[]> => {
+  try {
+    const res = await axiosInstance.get("https://lkui.dinus.id/api/v1/categories");
+    return res.data;
+  } catch (error: any) {
+    console.error(
+      "Error fetching categories:",
+      error.response || error.message || error
+    );
+    return [];
+  }
+};

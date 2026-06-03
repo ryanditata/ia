@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, ChevronLeft, ChevronRight, ChevronDown, CheckCircle2, Bookmark, Building2, MapPin, ScrollText, FileSignature, Landmark } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, ChevronDown, CheckCircle2, Bookmark, Building2, MapPin, ScrollText, FileSignature, Landmark, ListFilter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getPartners } from "@/service/partner/getPartner";
-import { getCountries } from "@/service/partner/getCountries";
+import { getCountries, getCities, getCategories } from "@/service/partner/getFilter";
 
 interface Partner {
   id: number;
@@ -16,6 +16,11 @@ interface Partner {
   mous_count?: number;
   moas_count?: number;
   ias_count?: number;
+}
+
+interface CategoryOption {
+  id: number;
+  name: string;
 }
 
 function Tag({ icon, value, label }: { icon: React.ReactNode; value: string | number; label: string }) {
@@ -42,12 +47,17 @@ export default function Partner() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalData, setTotalData] = useState(0);
   const [countries, setCountries] = useState<string[]>([]);
+  const [cityFilter, setCityFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [cities, setCities] = useState<string[]>([]);
+  const [categories, setCategories] = useState<CategoryOption[]>([]);
 
   useEffect(() => {
     const fetchPartners = async () => {
       try {
         setLoading(true);
-        const res = await getPartners(currentPage, search, countryFilter);
+        const res = await getPartners(currentPage, search, countryFilter, cityFilter, categoryFilter);
         setPartners(res.data);
         setTotalPages(res.last_page);
         setTotalData(res.total);
@@ -59,14 +69,24 @@ export default function Partner() {
       }
     };
     fetchPartners();
-  }, [currentPage, search, countryFilter]);
+  }, [currentPage, search, countryFilter, cityFilter, categoryFilter]);
 
   useEffect(() => {
-    const fetchCountries = async () => {
-      const res = await getCountries();
-      setCountries(res);
+    const fetchFilterOptions = async () => {
+      try {
+        const [resCountries, resCities, resCategories] = await Promise.all([
+          getCountries(),
+          getCities(),
+          getCategories()
+        ]);
+        setCountries(resCountries);
+        setCities(resCities);
+        setCategories(resCategories);
+      } catch (error) {
+        console.error("Failed to load filter options", error);
+      }
     };
-    fetchCountries();
+    fetchFilterOptions();
   }, []);
 
   const toTitleCase = (text?: string) => {
@@ -100,43 +120,112 @@ export default function Partner() {
           </div>
 
           {/* Search & Filter */}
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between rounded-2xl bg-white p-4 shadow-xs border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
-            <div className="relative w-full md:max-w-md">
-              <Search
-                className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400 dark:text-slate-500"
-                strokeWidth={2}
-              />
-              <input
-                type="text"
-                placeholder="Search partners..."
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-12 pr-4 text-sm text-slate-900 outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-primary-500 focus:bg-white focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 dark:focus:bg-slate-900"
-              />
+          <div className="flex flex-col gap-0 rounded-2xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+            <div className="flex flex-col items-center justify-between gap-4 p-4 md:flex-row">
+              <div className="relative w-full md:max-w-md">
+                <Search
+                  className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-600 dark:text-slate-400"
+                  strokeWidth={2}
+                />
+                <input
+                  type="text"
+                  placeholder="Search partners..."
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-12 pr-4 text-sm text-slate-900 outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-primary-500 focus:bg-white focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 dark:focus:bg-slate-900"
+                />
+              </div>
+
+              <button
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border px-5 py-2.5 text-sm font-medium transition-all duration-300 md:w-auto ${
+                  isFilterOpen 
+                    ? "border-primary-500 bg-primary-50 text-primary-600 dark:border-primary-500/50 dark:bg-primary-500/10 dark:text-primary-400" 
+                    : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700/50"
+                }`}
+              >
+                <ListFilter size={18} />
+                <span>Filter</span>
+                <ChevronDown size={18} className={`transition-transform duration-300 ${isFilterOpen ? "rotate-180" : ""}`} />
+              </button>
             </div>
 
-            <div className="relative w-full md:w-64">
-              <select
-                id="country-filter"
-                value={countryFilter}
-                onChange={(e) => {
-                  setCountryFilter(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="w-full appearance-none rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-4 pr-10 text-sm text-slate-900 outline-none transition-all duration-300 focus:border-primary-500 focus:bg-white focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:bg-slate-900 cursor-pointer"
-              >
-                <option value="">All Countries</option>
-                {countries.map((c) => (
-                  <option key={c} value={c}>
-                    {toTitleCase(c)}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-500" />
-            </div>
+            <AnimatePresence>
+              {isFilterOpen && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="overflow-hidden border-t border-slate-100 dark:border-slate-800/50"
+                >
+                  <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-3">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold text-slate-500 dark:text-slate-400">Country</label>
+                      <div className="relative">
+                        <select
+                          value={countryFilter}
+                          onChange={(e) => {
+                            setCountryFilter(e.target.value);
+                            setCurrentPage(1);
+                          }}
+                          className="w-full cursor-pointer appearance-none rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-4 pr-10 text-sm text-slate-900 outline-none transition-all duration-300 focus:border-primary-500 focus:bg-white focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:bg-slate-900"
+                        >
+                          <option value="">All Country</option>
+                          {countries.map((c) => (
+                            <option key={c} value={c}>{toTitleCase(c)}</option>
+                          ))}
+                        </select>
+                        <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold text-slate-500 dark:text-slate-400">City</label>
+                      <div className="relative">
+                        <select
+                          value={cityFilter}
+                          onChange={(e) => {
+                            setCityFilter(e.target.value);
+                            setCurrentPage(1);
+                          }}
+                          className="w-full cursor-pointer appearance-none rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-4 pr-10 text-sm text-slate-900 outline-none transition-all duration-300 focus:border-primary-500 focus:bg-white focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:bg-slate-900"
+                        >
+                          <option value="">All City</option>
+                          {cities.map((city) => (
+                            <option key={city} value={city}>{toTitleCase(city)}</option>
+                          ))}
+                        </select>
+                        <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold text-slate-500 dark:text-slate-400">Category</label>
+                      <div className="relative">
+                        <select
+                          value={categoryFilter}
+                          onChange={(e) => {
+                            setCategoryFilter(e.target.value);
+                            setCurrentPage(1);
+                          }}
+                          className="w-full cursor-pointer appearance-none rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-4 pr-10 text-sm text-slate-900 outline-none transition-all duration-300 focus:border-primary-500 focus:bg-white focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:bg-slate-900"
+                        >
+                          <option value="">All Category</option>
+                          {categories.map((cat) => (
+                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                          ))}
+                        </select>
+                        <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+                      </div>
+                    </div>
+
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Cards List */}

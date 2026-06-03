@@ -4,7 +4,7 @@ import * as am5map from "@amcharts/amcharts5/map";
 import * as am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import am5geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 import { generateCooperationMapByCountry } from "@/constants/worldMap";
-import { getAgreements } from "@/service/partner/getCountries";
+import { getAgreements } from "@/service/partner/getFilter";
 import { Minus, Plus} from "lucide-react";
 
 interface Country {
