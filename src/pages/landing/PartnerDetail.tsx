@@ -1,20 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import {
-  ChevronLeft,
-  Building2,
-  MapPin,
-  Bookmark,
-  ScrollText,
-  FileSignature,
-  Landmark,
-  CalendarRange,
-  Circle,
-  Inbox,
-  Ribbon,
-  SearchX
-} from "lucide-react";
+import { ChevronLeft, Building2, MapPin, Bookmark, ScrollText, FileSignature, Landmark, CalendarRange, Circle, Inbox, Ribbon, SearchX } from "lucide-react";
 import { getPartnerDetail } from "@/service/partner/getPartnerDetail";
 
 export default function PartnerDetail() {
@@ -103,10 +90,7 @@ export default function PartnerDetail() {
   return (
     <div className="min-h-screen bg-slate-50 pb-14 pt-24 dark:bg-slate-950">
       <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <button
-          onClick={() => navigate(-1)}
-          className="mb-4 cursor-pointer dark:text-slate-300"
-        >
+        <button onClick={() => navigate(-1)} className="mb-4 cursor-pointer dark:text-slate-300">
           <ChevronLeft size={24} />
         </button>
 
@@ -119,7 +103,7 @@ export default function PartnerDetail() {
                 <p className="text-lg font-semibold uppercase tracking-[0.15em] text-primary-600 dark:text-primary-400">
                   {partner.level ? String(partner.level).toUpperCase() : "-"} Partnership Profile
                 </p>
-                <h1 className="mt-2 max-w-3xl text-2xl font-semibold leading-tight text-slate-900 dark:text-white sm:text-4xl">
+                <h1 className="mt-2 max-w-3xl text-2xl font-semibold leading-tight uppercase text-slate-900 dark:text-white sm:text-4xl">
                   {partner.name}
                 </h1>
                 <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600 dark:text-slate-400 sm:text-base">
@@ -207,15 +191,17 @@ function PartnerDetailSkeleton() {
               </div>
             </div>
             <div className="-mt-10 px-6 pb-8 sm:px-10">
-              <div className="flex flex-col gap-6 lg:flex-row lg:items-end">
-                <div className="h-28 w-28 shrink-0 animate-pulse rounded-2xl border-4 border-white bg-slate-200 dark:border-slate-900 dark:bg-slate-800 sm:h-32 sm:w-32" />
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+              <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-end">
+                <div className="h-28 w-28 shrink-0 animate-pulse rounded-2xl border border-slate-200/80 bg-slate-200 ring-4 ring-white dark:border-slate-700 dark:bg-slate-800 dark:ring-slate-900 sm:h-32 sm:w-32" />
                 <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-3 lg:w-auto">
-                  <div className="h-10 w-full animate-pulse rounded-full bg-slate-200 dark:bg-slate-800 sm:w-32" />
-                  <div className="h-10 w-full animate-pulse rounded-full bg-slate-200 dark:bg-slate-800 sm:w-32" />
-                  <div className="h-10 w-full animate-pulse rounded-full bg-slate-200 dark:bg-slate-800 sm:w-40" />
+                  <div className="h-14 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800 sm:w-36" />
+                  <div className="h-14 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800 sm:w-36" />
+                  <div className="h-14 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800 sm:w-36" />
                 </div>
               </div>
             </div>
+          </div>
           </div>
 
           <div className="space-y-8">
@@ -288,7 +274,7 @@ function Section({
 
 function Tag({ icon, value }: { icon: React.ReactNode; value: string }) {
   return (
-    <div className="inline-flex items-center gap-2 rounded-full bg-slate-50/90 px-3 py-2 text-xs md:text-sm font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-200">
+    <div className="inline-flex items-center gap-2 rounded-xl bg-slate-50/90 px-3 py-2 text-xs md:text-sm font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-200">
       <span className="text-slate-900 dark:text-slate-400">{icon}</span>
       <span className="text-slate-900 dark:text-white">{value}</span>
     </div>
