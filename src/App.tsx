@@ -2,7 +2,8 @@ import { Route, Routes, Outlet } from "react-router-dom";
 import Navbar from "@/components/layouts/navbar";
 import LandingPage from "./pages/landing";
 import Footer from "@/components/layouts/footer";
-import PartnerDetail from "./pages/landing/PartnerDetail"; 
+import PartnerDetail from "./pages/landing/PartnerDetail";
+import MouDetail from "./pages/landing/MouDetail";
 
 function MainLayout() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route element={<MainLayout />}>
         <Route path="/" element={<LandingPage />} />
         <Route path="/partners/:id" element={<PartnerDetail />} />
+        <Route path="/mous/:id" element={<MouDetail />} />
       </Route>
 
       {/* <Route path="/login" element={<LoginPage />} /> */}

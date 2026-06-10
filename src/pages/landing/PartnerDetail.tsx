@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronLeft, Building2, MapPin, Bookmark, ScrollText, FileSignature, Landmark, CalendarRange, Circle, Inbox, Ribbon, SearchX } from "lucide-react";
 import { getPartnerDetail } from "@/service/partner/getPartnerDetail";
+import NotFound from "@/components/ui/NotFound";
 
 export default function PartnerDetail() {
   const { id } = useParams();
@@ -48,42 +49,11 @@ export default function PartnerDetail() {
 
   if (!partner) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 p-6 dark:bg-slate-950">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="flex max-w-md flex-col items-center text-center"
-        >
-          <motion.div
-            animate={{ y: [-8, 8, -8] }}
-            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-            className="relative mb-8"
-          >
-            <div className="absolute inset-0 animate-pulse rounded-full bg-blue-200/50 blur-3xl dark:bg-blue-900/20" />
-            <div className="relative flex h-24 w-24 items-center justify-center rounded-full border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900">
-              <SearchX className="h-10 w-10 text-slate-400 dark:text-slate-500" strokeWidth={1.5} />
-            </div>
-          </motion.div>
-
-          <h2 className="mb-3 text-2xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
-            Partner Not Found
-          </h2>
-          <p className="mb-8 text-sm leading-relaxed text-slate-500 dark:text-slate-400 sm:text-base">
-            We couldn't find the partnership data you're looking for. The document might have been removed or the ID is incorrect.
-          </p>
-
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => navigate(-1)}
-            className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-md transition-colors hover:bg-primary-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
-          >
-            <ChevronLeft size={18} />
-            Return to Partners List
-          </motion.button>
-        </motion.div>
-      </div>
+      <NotFound 
+        title="Partner Not Found"
+        description="We couldn't find the partnership data you're looking for. The document might have been removed or the ID is incorrect."
+        buttonText="Go Back"
+      />
     );
   }
 
@@ -176,34 +146,34 @@ function PartnerDetailSkeleton() {
   return (
     <div className="min-h-screen bg-slate-50 pb-14 pt-24 dark:bg-slate-950">
       <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        {/* Back Button Skeleton */}
         <div className="mb-4 h-8 w-10 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-
         <div className="space-y-8">
-          {/* Header Card Skeleton */}
           <div className="overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-[0_10px_40px_rgba(15,23,42,0.08)] dark:border-slate-800 dark:bg-slate-900">
             <div className="px-6 pb-16 pt-10 sm:px-10">
-              <div className="h-5 w-64 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-              <div className="mt-4 h-10 w-3/4 animate-pulse rounded bg-slate-200 dark:bg-slate-800 sm:w-1/2" />
-              <div className="mt-5 space-y-2">
+              <div className="h-5 w-52 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
+              <div className="mt-3 h-10 w-3/4 animate-pulse rounded bg-slate-200 dark:bg-slate-800 sm:w-1/2" />
+              <div className="mt-4 space-y-2">
                 <div className="h-4 w-full animate-pulse rounded bg-slate-200 dark:bg-slate-800 lg:w-2/3" />
                 <div className="h-4 w-4/5 animate-pulse rounded bg-slate-200 dark:bg-slate-800 lg:w-1/2" />
               </div>
             </div>
+            
             <div className="-mt-10 px-6 pb-8 sm:px-10">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-              <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-end">
-                <div className="h-28 w-28 shrink-0 animate-pulse rounded-2xl border border-slate-200/80 bg-slate-200 ring-4 ring-white dark:border-slate-700 dark:bg-slate-800 dark:ring-slate-900 sm:h-32 sm:w-32" />
-                <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-3 lg:w-auto">
-                  <div className="h-14 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800 sm:w-36" />
-                  <div className="h-14 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800 sm:w-36" />
-                  <div className="h-14 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800 sm:w-36" />
+              <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+                <div className="flex items-end gap-5">
+                  <div className="h-28 w-28 shrink-0 animate-pulse rounded-2xl border border-slate-200/80 bg-slate-100 ring-4 ring-white dark:border-slate-700 dark:bg-slate-800 dark:ring-slate-900 sm:h-32 sm:w-32" />
+                  {/* Tag Grid Match layout */}
+                  <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+                    <div className="h-12 w-36 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
+                    <div className="h-12 w-36 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
+                    <div className="h-12 w-36 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          </div>
 
+          {/* Section Document Lists Skeleton */}
           <div className="space-y-8">
             {[1, 2, 3].map((sectionIndex) => (
               <div key={sectionIndex} className="rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
@@ -216,10 +186,11 @@ function PartnerDetailSkeleton() {
                 </div>
                 <div className="space-y-4">
                   {[1, 2].map((cardIndex) => (
-                    <div key={cardIndex} className="rounded-xl border border-slate-200/80 p-5 dark:border-slate-700">
+                    // Ditambahkan pt-12 agar menyamai tinggi DocumentCard yang memiliki absolute badge di pojok atas
+                    <div key={cardIndex} className="relative overflow-hidden rounded-xl border border-slate-200/80 p-5 pt-12 dark:border-slate-700 dark:bg-slate-900">
+                      <div className="absolute left-0 top-0 h-7 w-16 animate-pulse rounded-br-lg bg-slate-200 dark:bg-slate-800" />
                       <div className="mb-3 flex items-start justify-between gap-4">
-                        <div className="w-3/4 space-y-3">
-                          <div className="h-5 w-16 animate-pulse rounded-full bg-slate-200 dark:bg-slate-800" />
+                        <div className="w-3/4 space-y-2">
                           <div className="h-5 w-full animate-pulse rounded bg-slate-200 dark:bg-slate-800 sm:w-5/6" />
                         </div>
                         <div className="h-6 w-16 animate-pulse rounded-full bg-slate-200 dark:bg-slate-800" />
@@ -300,6 +271,7 @@ function DocumentList({ docs, type }: { docs: any[]; type: string }) {
 }
 
 function DocumentCard({ doc, type }: { doc: any; type: string }) {
+  const navigate = useNavigate();
   const isActive = String(doc.status || "").toLowerCase() === "active";
   const period = useMemo(() => formatPeriod(doc.start_date, doc.end_date), [doc.start_date, doc.end_date]);
 
@@ -320,8 +292,15 @@ function DocumentCard({ doc, type }: { doc: any; type: string }) {
 
   const config = typeConfig[type as keyof typeof typeConfig] || typeConfig.MoU;
 
+  const handleCardClick = () => {
+    if (type === "MoU") {
+      navigate(`/mous/${doc.id}`); 
+    }
+  };
+
   return (
     <motion.div
+      onClick={handleCardClick}
       variants={{
         hidden: { opacity: 0, y: 14 },
         show: { opacity: 1, y: 0 },

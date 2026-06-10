@@ -52,8 +52,17 @@ export default function Navbar() {
     : "bg-transparent";
 
   const checkIsActive = (to: string) => {
-    return (isHomePage && activeSection === to) || 
-           (!isHomePage && location.pathname.includes(`/${to}`));
+    if (isHomePage) {
+      return activeSection === to;
+    }
+    if (to === "partners") {
+      return (
+        location.pathname.includes("/partners") || 
+        location.pathname.includes("/mous") || 
+        location.pathname.includes("/moas")
+      );
+    }
+    return location.pathname.includes(`/${to}`);
   };
 
   const linkClass = (to: string) => {
