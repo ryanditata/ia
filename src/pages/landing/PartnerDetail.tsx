@@ -162,7 +162,6 @@ function PartnerDetailSkeleton() {
               <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                 <div className="flex items-end gap-5">
                   <div className="h-28 w-28 shrink-0 animate-pulse rounded-2xl border border-slate-200/80 bg-slate-100 ring-4 ring-white dark:border-slate-700 dark:bg-slate-800 dark:ring-slate-900 sm:h-32 sm:w-32" />
-                  {/* Tag Grid Match layout */}
                   <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
                     <div className="h-12 w-36 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
                     <div className="h-12 w-36 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
@@ -173,7 +172,6 @@ function PartnerDetailSkeleton() {
             </div>
           </div>
 
-          {/* Section Document Lists Skeleton */}
           <div className="space-y-8">
             {[1, 2, 3].map((sectionIndex) => (
               <div key={sectionIndex} className="rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
@@ -186,7 +184,6 @@ function PartnerDetailSkeleton() {
                 </div>
                 <div className="space-y-4">
                   {[1, 2].map((cardIndex) => (
-                    // Ditambahkan pt-12 agar menyamai tinggi DocumentCard yang memiliki absolute badge di pojok atas
                     <div key={cardIndex} className="relative overflow-hidden rounded-xl border border-slate-200/80 p-5 pt-12 dark:border-slate-700 dark:bg-slate-900">
                       <div className="absolute left-0 top-0 h-7 w-16 animate-pulse rounded-br-lg bg-slate-200 dark:bg-slate-800" />
                       <div className="mb-3 flex items-start justify-between gap-4">
