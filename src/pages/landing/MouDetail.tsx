@@ -142,11 +142,11 @@ Terima kasih.`;
             
             {/* HEADER SECTION */}
             <div className="relative px-6 pb-12 pt-10 sm:px-10">
-              <div className="absolute inset-0 bg-[linear-gradient(to_left,#e2e8f0_2px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_2px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,#000_60%,transparent_100%)] dark:bg-[linear-gradient(to_left,#334155_2px,transparent_1px),linear-gradient(to_bottom,#334155_2px,transparent_1px)]" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.05),transparent_50%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.1),transparent_50%)]" />
-              
+              <div className="absolute inset-0 bg-[linear-gradient(to_left,rgba(103,113,220,0.20)_2px,transparent_1px),linear-gradient(to_bottom,rgba(103,113,220,0.20)_2px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,#000_60%,transparent_100%)] dark:bg-[linear-gradient(to_left,rgba(129,140,248,0.20)_2px,transparent_1px),linear-gradient(to_bottom,rgba(129,140,248,0.20)_2px,transparent_1px)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(103,113,220,0.20),transparent_40%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(129,140,248,0.20),transparent_40%)]" />
+
               <div className="relative z-10">
-                <p className="text-base font-semibold uppercase tracking-[0.15em] text-primary-600 dark:text-primary-400">
+                <p className="text-base font-semibold uppercase tracking-[0.15em] text-[#6771dc] dark:text-indigo-400">
                   Memorandum of Understanding
                 </p>
                 <h1 className="mt-2 max-w-4xl text-2xl font-semibold leading-tight text-slate-900 dark:text-white sm:text-3xl lg:text-4xl">
@@ -344,7 +344,11 @@ Terima kasih.`;
                       const isMoaActive = String(moa.status || "").toLowerCase() === "active";
                       const moaPeriod = formatPeriod(moa.start_date, moa.end_date);
                       return (
-                        <motion.div key={moa.id} variants={{ hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0 } }} className="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-5 pt-12 shadow-sm transition-shadow hover:shadow-md dark:border-slate-700 dark:bg-slate-900">
+                        <motion.div
+                          key={moa.id} 
+                          variants={{ hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0 } }} 
+                          onClick={() => navigate(`/moas/${moa.id}`)}
+                          className="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-5 pt-12 shadow-sm transition-shadow hover:shadow-md dark:border-slate-700 dark:bg-slate-900 cursor-pointer">
                           <div className="absolute left-0 top-0 flex items-center gap-2 rounded-br-lg bg-[#67b7dc]/10 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-[#67b7dc] dark:bg-[#67b7dc]/25 dark:text-sky-300">
                             <FileSignature size={14} /> MOA
                           </div>

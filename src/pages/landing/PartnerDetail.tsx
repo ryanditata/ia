@@ -292,6 +292,10 @@ function DocumentCard({ doc, type }: { doc: any; type: string }) {
   const handleCardClick = () => {
     if (type === "MoU") {
       navigate(`/mous/${doc.id}`); 
+    } else if (type === "MoA") {
+      navigate(`/moas/${doc.id}`); 
+    } else if (type === "IA") {
+      navigate(`/ias/${doc.id}`); 
     }
   };
 

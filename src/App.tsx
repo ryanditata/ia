@@ -4,6 +4,7 @@ import LandingPage from "./pages/landing";
 import Footer from "@/components/layouts/footer";
 import PartnerDetail from "./pages/landing/PartnerDetail";
 import MouDetail from "./pages/landing/MouDetail";
+import MoaDetail from "./pages/landing/MoaDetail";
 
 function MainLayout() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/partners/:id" element={<PartnerDetail />} />
         <Route path="/mous/:id" element={<MouDetail />} />
+        <Route path="/moas/:id" element={<MoaDetail />} />
       </Route>
 
       {/* <Route path="/login" element={<LoginPage />} /> */}
