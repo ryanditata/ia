@@ -4,9 +4,7 @@ import { motion } from "framer-motion";
 import {
   ChevronLeft,
   CalendarRange,
-  Building,
   Building2,
-  Circle,
   Inbox,
   SendHorizontal,
   FileText,
@@ -14,20 +12,23 @@ import {
   AlertTriangle,
   MapPin,
   UserRound,
-  Landmark,
-  ScrollText,
+  FileSignature,
   Activity,
   Target,
   BarChart3,
+  Landmark,
+  GraduationCap,
+  UsersRound,
+  BadgeCheck,
 } from "lucide-react";
-import { getMoaDetail } from "@/service/moa/getMoaDetail";
-import type { MoaActivity, MoaDetailResponse, MoaParticipant, RelatedIa } from "@/types/moa";
+import { getIaDetail } from "@/service/ia/getIaDetail";
+import type { IaActivity, IaDetailResponse, IaImplementer, IaParticipant } from "@/types/ia";
 import NotFound from "@/components/ui/NotFound";
 
-export default function MoaDetailPage() {
+export default function IaDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [moaData, setMoaData] = useState<MoaDetailResponse | null>(null);
+  const [iaData, setIaData] = useState<IaDetailResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,8 +37,8 @@ export default function MoaDetailPage() {
     const fetchDetail = async () => {
       try {
         setLoading(true);
-        const data = await getMoaDetail(id);
-        setMoaData(data);
+        const data = await getIaDetail(id);
+        setIaData(data);
       } catch (error) {
         console.error(error);
       } finally {
@@ -49,32 +50,31 @@ export default function MoaDetailPage() {
   }, [id]);
 
   if (loading) {
-    return <MoaDetailSkeleton />;
+    return <IaDetailSkeleton />;
   }
 
-  if (!moaData?.data) {
+  if (!iaData?.data) {
     return (
       <NotFound
-        title="MoA Not Found"
-        description="We couldn't find the MoA document you're looking for. It may have been removed or the ID is incorrect."
+        title="IA Not Found"
+        description="We couldn't find the Implementation Arrangement document you're looking for. It may have been removed or the ID is incorrect."
         buttonText="Go Back"
       />
     );
   }
 
-  const moa = moaData.data;
-  const relatedIas = moaData.related_ias?.data ?? [];
-  const isActive = String(moa.status || "").toLowerCase() === "active";
-  const period = formatPeriod(moa.start_date, moa.end_date);
-  const udiinusSide = moa.participants.find((p) => !isPartnerSide(p));
-  const partnerSide = moa.participants.find((p) => isPartnerSide(p));
+  const ia = iaData.data;
+  const isActive = String(ia.status || "").toLowerCase() === "active";
+  const period = formatPeriod(ia.start_date, ia.end_date);
+  const udiinusSide = ia.participants.find((p) => !isPartnerSide(p));
+  const partnerSide = ia.participants.find((p) => isPartnerSide(p));
   const partnerName = partnerSide?.partner?.name || "Partner Institution";
   const partnerCategory = partnerSide?.partner?.category?.name || "-";
 
   const whatsappMessage = `Halo Admin LKUI, Saya ingin meminta izin untuk mengakses dokumen kerja sama berikut:
 
-*Jenis Dokumen:* Memorandum of Agreement (MoA)
-*Judul Dokumen:* ${moa.title || "-"}
+*Jenis Dokumen:* Implementation Arrangement (IA)
+*Judul Dokumen:* ${ia.title || "-"}
 *Nama Mitra:* ${partnerName}
 *Keperluan:* [Mohon tuliskan alasan/keperluan Anda di sini...]
 
@@ -92,25 +92,25 @@ Terima kasih.`;
           <div className="overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-[0_10px_40px_rgba(15,23,42,0.08)] dark:border-slate-800 dark:bg-slate-900">
             {/* HEADER */}
             <div className="relative px-6 pb-12 pt-10 sm:px-10">
-              <div className="absolute inset-0 bg-[linear-gradient(to_left,rgba(103,183,220,0.20)_2px,transparent_1px),linear-gradient(to_bottom,rgba(103,183,220,0.20)_2px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,#000_60%,transparent_100%)] dark:bg-[linear-gradient(to_left,rgba(56,189,248,0.20)_2px,transparent_1px),linear-gradient(to_bottom,rgba(56,189,248,0.20)_2px,transparent_1px)]" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(103,183,220,0.20),transparent_40%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.20),transparent_40%)]" />
+              <div className="absolute inset-0 bg-[linear-gradient(to_left,rgba(163,103,220,0.20)_2px,transparent_1px),linear-gradient(to_bottom,rgba(163,103,220,0.20)_2px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,#000_60%,transparent_100%)] dark:bg-[linear-gradient(to_left,rgba(168,85,247,0.20)_2px,transparent_1px),linear-gradient(to_bottom,rgba(168,85,247,0.20)_2px,transparent_1px)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(163,103,220,0.20),transparent_40%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(168,85,247,0.20),transparent_40%)]" />
 
               <div className="relative z-10">
-                <p className="text-base font-semibold uppercase tracking-[0.15em] text-[#67b7dc] dark:text-sky-400">
-                  Memorandum of Agreement
+                <p className="text-base font-semibold uppercase tracking-[0.15em] text-[#a367dc] dark:text-purple-400">
+                  Implementation Arrangement
                 </p>
                 <h1 className="mt-2 max-w-4xl text-2xl font-semibold leading-tight text-slate-900 dark:text-white sm:text-3xl lg:text-4xl">
-                  {moa.title}
+                  {ia.title}
                 </h1>
 
                 <p className="mt-4 inline-flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 sm:text-base">
                   <Bookmark className="h-4 w-4 text-slate-800 dark:text-slate-500" />
-                  <span className="font-medium tracking-wide">{moa.letter_number}</span>
+                  <span className="font-medium tracking-wide">{ia.letter_number}</span>
                 </p>
 
-                {moa.description ? (
+                {ia.description ? (
                   <p className="max-w-3xl text-sm leading-relaxed text-slate-600 dark:text-slate-400 sm:text-base">
-                    {moa.description}
+                    {ia.description}
                   </p>
                 ) : null}
 
@@ -137,7 +137,7 @@ Terima kasih.`;
                   </div>
 
                   <div className="w-full justify-self-end sm:w-auto">
-                    {moa.file_url ? (
+                    {ia.file_url ? (
                       <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-50/50 transition-colors hover:bg-slate-50 dark:border-slate-700/80 dark:bg-slate-800/30 dark:hover:bg-slate-800/50">
                         <div className="flex flex-col items-start justify-between gap-2 p-2 sm:flex-row sm:items-center">
                           <div className="flex items-center gap-4">
@@ -145,7 +145,7 @@ Terima kasih.`;
                               <FileText size={28} strokeWidth={1.5} />
                             </div>
                             <div>
-                              <h4 className="text-base font-semibold text-slate-900 dark:text-white">MoA Document</h4>
+                              <h4 className="text-base font-semibold text-slate-900 dark:text-white">IA Document</h4>
                               <p className="text-sm text-slate-500 dark:text-slate-400">Request document access via WhatsApp.</p>
                             </div>
                           </div>
@@ -169,7 +169,7 @@ Terima kasih.`;
                         <div>
                           <h4 className="text-sm font-semibold text-amber-800 dark:text-amber-300">Document Not Available</h4>
                           <p className="mt-1 text-xs text-amber-600 dark:text-amber-400/80">
-                            No PDF file has been attached to this MoA document yet.
+                            No PDF file has been attached to this IA document yet.
                           </p>
                         </div>
                       </div>
@@ -203,27 +203,25 @@ Terima kasih.`;
                 </div>
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">Activities</p>
                 <p className="mt-1 text-sm font-semibold leading-relaxed text-slate-900 dark:text-white">
-                  {moa.activities?.length
-                    ? moa.activities.map((a) => formatLabel(a.name)).join(", ")
-                    : "-"}
+                  {ia.activities?.length ? ia.activities.map((a) => formatLabel(a.name)).join(", ") : "-"}
                 </p>
               </div>
             </div>
 
-            {/* PARENT MOU */}
-            {moa.mou ? (
+            {/* PARENT MOA */}
+            {ia.moa ? (
               <div className="border-t border-slate-100 px-6 py-5 dark:border-slate-800 sm:px-10">
                 <Link
-                  to={`/mous/${moa.mou.id}`}
+                  to={`/moas/${ia.moa.id}`}
                   className="group flex w-full items-center gap-3 rounded-xl border border-slate-200/80 bg-slate-50/50 px-4 py-3 transition-colors hover:bg-slate-50 dark:border-slate-700/80 dark:bg-slate-800/30 dark:hover:bg-slate-800/50"
                 >
-                  <ScrollText className="h-[18px] w-[18px] shrink-0 text-[#6771dc] sm:h-5 sm:w-5 dark:text-indigo-400" />
+                  <FileSignature className="h-[18px] w-[18px] shrink-0 text-[#67b7dc] sm:h-5 sm:w-5 dark:text-sky-400" />
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Parent MoU</p>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Parent MoA</p>
                     <p className="text-sm font-semibold text-slate-900 group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-400">
-                      {moa.mou.title}
+                      {ia.moa.title}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">{moa.mou.letter_number}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{ia.moa.letter_number}</p>
                   </div>
                 </Link>
               </div>
@@ -236,18 +234,18 @@ Terima kasih.`;
                   <Activity size={22} className="text-[#a367dc] dark:text-purple-400" /> Cooperation Activities
                 </h3>
                 <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                  {moa.activities?.length || 0}
+                  {ia.activities?.length || 0}
                 </span>
               </div>
 
-              {moa.activities?.length > 0 ? (
+              {ia.activities?.length > 0 ? (
                 <motion.div
                   initial="hidden"
                   animate="show"
                   variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
                   className="grid grid-cols-1 gap-4"
                 >
-                  {moa.activities.map((activity) => (
+                  {ia.activities.map((activity) => (
                     <ActivityCard key={activity.id} activity={activity} />
                   ))}
                 </motion.div>
@@ -263,11 +261,11 @@ Terima kasih.`;
                   <UserRound size={22} className="text-[#6771dc] dark:text-indigo-400" /> Signatories
                 </h3>
                 <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                  {moa.participants?.length || 0}
+                  {ia.participants?.length || 0}
                 </span>
               </div>
 
-              {moa.participants?.length > 0 ? (
+              {ia.participants?.length > 0 ? (
                 <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
                   {udiinusSide ? (
                     <ParticipantCard participant={udiinusSide} role="Universitas Dian Nuswantoro" />
@@ -279,30 +277,26 @@ Terima kasih.`;
               )}
             </div>
 
-            {/* RELATED IAs */}
+            {/* IMPLEMENTERS */}
             <div className="border-t border-slate-100 bg-slate-50/30 p-6 dark:border-slate-800 dark:bg-slate-900/30 sm:p-10">
               <div className="mb-6 flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
                 <h3 className="flex items-center gap-2 text-lg font-semibold tracking-tight text-slate-900 dark:text-white">
-                  <Landmark size={22} className="text-[#a367dc] dark:text-purple-400" /> Related Implementation Arrangement
+                  <UsersRound size={22} className="text-[#a367dc] dark:text-purple-400" /> Implementers
                 </h3>
                 <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-xs font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                  {moaData.related_ias?.total ?? relatedIas.length}
+                  {ia.implementers?.length || 0}
                 </span>
               </div>
 
-              {relatedIas.length > 0 ? (
+              {ia.implementers?.length > 0 ? (
                 <motion.div
                   initial="hidden"
                   animate="show"
-                  variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
-                  className="grid grid-cols-1 gap-4"
+                  variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
+                  className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3"
                 >
-                  {relatedIas.map((ia) => (
-                    <RelatedIaCard 
-                      key={ia.id} 
-                      ia={ia}
-                      onClick={() => navigate(`/ias/${ia.id}`)}
-                    />
+                  {ia.implementers.map((implementer) => (
+                    <ImplementerCard key={implementer.id} implementer={implementer} />
                   ))}
                 </motion.div>
               ) : (
@@ -310,7 +304,7 @@ Terima kasih.`;
                   <div className="mb-3 rounded-full bg-slate-100 p-3 text-slate-400 dark:bg-slate-800 dark:text-slate-500">
                     <Inbox className="h-5 w-5" />
                   </div>
-                  <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">No related IA found</p>
+                  <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">No implementers listed</p>
                 </div>
               )}
             </div>
@@ -321,14 +315,14 @@ Terima kasih.`;
   );
 }
 
-function MoaDetailSkeleton() {
+function IaDetailSkeleton() {
   return (
     <div className="min-h-screen bg-slate-50 pb-14 pt-24 dark:bg-slate-950">
       <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mb-4 h-8 w-10 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
         <div className="overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-[0_10px_40px_rgba(15,23,42,0.08)] dark:border-slate-800 dark:bg-slate-900">
           <div className="px-6 pb-12 pt-10 sm:px-10">
-            <div className="h-4 w-48 animate-pulse rounded bg-slate-200 dark:bg-slate-800 sm:w-56" />
+            <div className="h-4 w-56 animate-pulse rounded bg-slate-200 dark:bg-slate-800 sm:w-64" />
             <div className="mt-3 h-10 w-full animate-pulse rounded bg-slate-200 dark:bg-slate-800 sm:w-4/5" />
             <div className="mt-4 h-4 w-32 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
             <div className="mt-8 grid grid-cols-1 items-center gap-5 md:grid-cols-2">
@@ -386,18 +380,15 @@ function MoaDetailSkeleton() {
 
           <div className="border-t border-slate-100 bg-slate-50/30 p-6 dark:border-slate-800 dark:bg-slate-900/30 sm:p-10">
             <div className="mb-6 flex flex-col gap-3 border-b border-slate-100 pb-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800">
-              <div className="h-6 w-56 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
+              <div className="h-6 w-40 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
               <div className="h-7 w-7 animate-pulse rounded-full bg-slate-200 dark:bg-slate-800" />
             </div>
-            <div className="grid grid-cols-1 gap-4">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-5 pt-12 dark:border-slate-700 dark:bg-slate-900">
-                  <div className="absolute left-0 top-0 h-7 w-16 animate-pulse rounded-br-lg bg-slate-200 dark:bg-slate-800" />
-                  <div className="mb-3 h-5 w-3/4 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-                  <div className="space-y-2">
-                    <div className="h-4 w-40 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-                    <div className="h-4 w-56 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-                  </div>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="rounded-xl border border-slate-200/80 bg-white p-4 dark:border-slate-700 dark:bg-slate-900">
+                  <div className="mb-2 h-4 w-3/4 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
+                  <div className="h-3 w-16 animate-pulse rounded-full bg-slate-200 dark:bg-slate-800" />
+                  <div className="mt-2 h-3 w-32 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
                 </div>
               ))}
             </div>
@@ -408,7 +399,7 @@ function MoaDetailSkeleton() {
   );
 }
 
-function ActivityCard({ activity }: { activity: MoaActivity }) {
+function ActivityCard({ activity }: { activity: IaActivity }) {
   const { pivot } = activity;
 
   return (
@@ -417,7 +408,7 @@ function ActivityCard({ activity }: { activity: MoaActivity }) {
       className="rounded-xl border border-slate-200/80 bg-slate-50/50 p-5 dark:border-slate-700/80 dark:bg-slate-800/30"
     >
       <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-[#a367dc]/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#a367dc] dark:bg-[#a367dc]/25 dark:text-purple-300">
-        <Activity size={14} />
+        <Landmark size={14} />
         {formatLabel(activity.name)}
       </div>
 
@@ -449,8 +440,8 @@ function ActivityCard({ activity }: { activity: MoaActivity }) {
   );
 }
 
-function ParticipantCard({ participant, role }: { participant: MoaParticipant; role: string }) {
-  const institutions = participant.institutions?.map((i) => i.name).join(", ");
+function ParticipantCard({ participant, role }: { participant: IaParticipant; role: string }) {
+  const studyPrograms = participant.studyprograms?.map((sp) => `${sp.name} (${sp.type})`).join(", ");
 
   return (
     <motion.div
@@ -467,12 +458,12 @@ function ParticipantCard({ participant, role }: { participant: MoaParticipant; r
           <p className="mt-1 font-semibold text-slate-900 dark:text-white">{participant.signatory_name || "-"}</p>
           <p className="text-slate-600 dark:text-slate-400">{participant.signatory_position || "-"}</p>
         </div>
-        {institutions ? (
+        {studyPrograms ? (
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Institution</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Study Program</p>
             <p className="mt-1 inline-flex items-start gap-2 text-slate-600 dark:text-slate-300">
-              <Building className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
-              <span>{institutions}</span>
+              <GraduationCap className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
+              <span>{studyPrograms}</span>
             </p>
           </div>
         ) : null}
@@ -488,45 +479,29 @@ function ParticipantCard({ participant, role }: { participant: MoaParticipant; r
   );
 }
 
-function RelatedIaCard({ ia, onClick }: { ia: RelatedIa; onClick: () => void }) {
-  const isIaActive = String(ia.status || "").toLowerCase() === "active";
-  const iaPeriod = formatPeriod(ia.start_date, ia.end_date);
+function ImplementerCard({ implementer }: { implementer: IaImplementer }) {
+  const identifier = implementer.nip || implementer.nim;
 
   return (
     <motion.div
-      variants={{ hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0 } }}
-      onClick={onClick}
-      className="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white p-5 pt-12 shadow-sm transition-shadow hover:shadow-md dark:border-slate-700 dark:bg-slate-900 cursor-pointer"
+      variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
+      className="rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900"
     >
-      <div className="absolute left-0 top-0 flex items-center gap-2 rounded-br-lg bg-[#a367dc]/10 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-[#a367dc] dark:bg-[#a367dc]/25 dark:text-purple-300">
-        <Landmark size={14} /> IA
-      </div>
-      <div className="mb-3 flex items-start justify-between gap-4">
-        <div className="flex-1">
-          <h4 className="line-clamp-2 text-base font-semibold leading-snug text-slate-900 dark:text-slate-100">
-            {ia.title || "Untitled document"}
-          </h4>
+      <div className="flex items-start gap-3">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#a367dc]/10 text-[#a367dc] dark:bg-[#a367dc]/25 dark:text-purple-300">
+          <BadgeCheck size={18} />
         </div>
-        <span
-          className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
-            isIaActive
-              ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300"
-              : "bg-rose-100 text-rose-800 dark:bg-rose-900/40 dark:text-rose-300"
-          }`}
-        >
-          <Circle className="h-2 w-2 fill-current stroke-0" />
-          {isIaActive ? "Active" : "Expired"}
-        </span>
-      </div>
-      <div className="grid gap-2 text-sm text-slate-600 dark:text-slate-400">
-        <p className="inline-flex items-center gap-2">
-          <Bookmark className="h-4 w-4 text-slate-800 dark:text-slate-500" />
-          <span>No. {ia.letter_number || "-"}</span>
-        </p>
-        <p className="inline-flex items-center gap-2">
-          <CalendarRange className="h-4 w-4 text-slate-800 dark:text-slate-500" />
-          <span>{iaPeriod}</span>
-        </p>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-semibold text-slate-900 dark:text-white">{formatName(implementer.name)}</p>
+          <span className="mt-1 inline-flex rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-600 dark:bg-slate-800 dark:text-slate-400">
+            {implementer.type}
+          </span>
+          {identifier ? (
+            <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+              {implementer.nip ? "NIP" : "NIM"}: {identifier}
+            </p>
+          ) : null}
+        </div>
       </div>
     </motion.div>
   );
@@ -543,7 +518,7 @@ function EmptyState({ title }: { title: string }) {
   );
 }
 
-function isPartnerSide(participant: MoaParticipant) {
+function isPartnerSide(participant: IaParticipant) {
   return participant.side.toLowerCase() === "partner" || participant.partner_id !== null;
 }
 
@@ -551,6 +526,14 @@ function formatLabel(value: string) {
   return value
     .split(/[_\s-]+/)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+}
+
+function formatName(value: string) {
+  return value
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
 

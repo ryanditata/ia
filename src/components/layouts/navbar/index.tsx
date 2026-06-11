@@ -59,7 +59,8 @@ export default function Navbar() {
       return (
         location.pathname.includes("/partners") || 
         location.pathname.includes("/mous") || 
-        location.pathname.includes("/moas")
+        location.pathname.includes("/moas") ||
+        location.pathname.includes("/ias")
       );
     }
     return location.pathname.includes(`/${to}`);

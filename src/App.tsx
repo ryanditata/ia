@@ -5,6 +5,7 @@ import Footer from "@/components/layouts/footer";
 import PartnerDetail from "./pages/landing/PartnerDetail";
 import MouDetail from "./pages/landing/MouDetail";
 import MoaDetail from "./pages/landing/MoaDetail";
+import IaDetail from "./pages/landing/IaDetail";
 
 function MainLayout() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/partners/:id" element={<PartnerDetail />} />
         <Route path="/mous/:id" element={<MouDetail />} />
         <Route path="/moas/:id" element={<MoaDetail />} />
+        <Route path="/ias/:id" element={<IaDetail />} />
       </Route>
 
       {/* <Route path="/login" element={<LoginPage />} /> */}
