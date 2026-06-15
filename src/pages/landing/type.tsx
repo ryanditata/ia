@@ -31,7 +31,7 @@ export default function Type() {
       id="collaboration-types"
       className="relative bg-white py-20 dark:bg-slate-900"
     >
-      <div ref={ref} className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div ref={ref} className="container mx-auto max-w-full px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={containerVariants}
           initial="hidden"

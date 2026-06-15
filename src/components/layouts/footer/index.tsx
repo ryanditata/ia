@@ -4,7 +4,7 @@ import ThemeToggle from "@/components/ui/ThemeToggle";
 export default function Footer() {
   return (
     <footer className="bg-gradient-to-b from-[#0f1f3d] to-[#0b172e] text-white">
-      <div className="container mx-auto max-w-7xl px-6 py-12">
+      <div className="container mx-auto max-w-full px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           <div>
             <h3 className="text-3xl font-semibold">

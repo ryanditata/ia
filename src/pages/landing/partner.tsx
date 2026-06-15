@@ -101,7 +101,7 @@ export default function Partner() {
       id="partners"
       className="relative min-h-screen overflow-hidden bg-slate-50 py-20 dark:bg-slate-950"
     >
-      <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto max-w-full px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -33,7 +33,7 @@ export default function MouDetailPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 pb-14 pt-24 dark:bg-slate-950">
-        <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto max-w-full px-4 sm:px-6 lg:px-8">
           <div className="mb-4 h-8 w-10 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
           <div className="overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-[0_10px_40px_rgba(15,23,42,0.08)] dark:border-slate-800 dark:bg-slate-900">
             <div className="px-6 pb-12 pt-10 sm:px-10">
@@ -131,7 +131,7 @@ Terima kasih.`;
 
   return (
     <div className="min-h-screen bg-slate-50 pb-14 pt-24 dark:bg-slate-950">
-      <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto max-w-full px-4 sm:px-6 lg:px-8">
         
         <button onClick={() => navigate(-1)} className="mb-4 cursor-pointer dark:text-slate-300">
           <ChevronLeft size={24} />
