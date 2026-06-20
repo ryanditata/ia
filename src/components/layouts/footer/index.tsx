@@ -25,7 +25,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="" className="hover:text-white transition-colors cursor-pointer">
+                <a href="https://garuda.dinus.ac.id/" className="hover:text-white transition-colors cursor-pointer">
                   Garuda Scholarship
                 </a>
               </li>
