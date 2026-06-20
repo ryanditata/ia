@@ -1,11 +1,35 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { SendHorizontal } from "lucide-react";
+import { getContact } from "@/service/contact/getContact";
+
+interface ContactData {
+  title: string;
+  description: string;
+}
 
 export default function Contact() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [data, setData] = useState<ContactData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContactData = async () => {
+      try {
+        const result = await getContact();
+        if (result.success && result.data) {
+          setData(result.data);
+        }
+      } catch (error) {
+        console.error("Error fetching contact data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchContactData();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,26 +44,26 @@ export default function Contact() {
     >
       <div ref={ref} className="container mx-auto max-w-full px-4 sm:px-6 lg:px-8">
         <motion.div
+          key={isLoading ? "loading" : "loaded"}
           initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          animate={isInView && !isLoading ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
           className="mx-auto max-w-2xl space-y-12"
         >
           {/* Section Header */}
           <div className="space-y-4 text-center">
             <h2 className="text-2xl font-semibold text-slate-900 dark:text-white sm:text-3xl lg:text-4xl">
-              Contact Us
+              {data?.title}
             </h2>
             <p className="text-base text-slate-600 dark:text-slate-400">
-              If you have any questions or need further information, feel free to
-              reach out to us.
+              {data?.description}
             </p>
           </div>
 
           {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            animate={isInView && !isLoading ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="rounded-2xl border border-slate-200/80 bg-white p-8 shadow-xl shadow-slate-200/50 dark:border-slate-700/80 dark:bg-slate-800/50 dark:shadow-slate-900/50"
           >
