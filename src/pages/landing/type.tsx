@@ -1,6 +1,23 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView, Variants } from "framer-motion";
-import { cooperationTypes } from "@/constants/cooperationTypes";
+import * as LucideIcons from "lucide-react";
+import { getTypes } from "@/service/type/getType";
+
+interface TypeItem {
+  id: number;
+  title: string;
+  description: string;
+  icon_name: string;
+  image_url: string;
+}
+
+interface TypeData {
+  header: {
+    title: string;
+    description: string;
+  };
+  items: TypeItem[];
+}
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -25,6 +42,28 @@ const cardVariants: Variants = {
 export default function Type() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const [data, setData] = useState<TypeData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTypesData = async () => {
+      try {
+        const result = await getTypes();
+        if (result.success && result.data) {
+          setData(result.data);
+        }
+      } catch (error) {
+        console.error("Error fetching types data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchTypesData();
+  }, []);
+
+  const title = data?.header?.title;
+  const description = data?.header?.description;
+  const items = data?.items || [];
 
   return (
     <div
@@ -33,19 +72,19 @@ export default function Type() {
     >
       <div ref={ref} className="container mx-auto max-w-full px-4 sm:px-6 lg:px-8">
         <motion.div
+          key={isLoading ? "loading" : "loaded"}
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+          animate={isInView && !isLoading ? "visible" : "hidden"}
           className="space-y-12"
         >
           {/* Section Header */}
           <motion.div variants={cardVariants} className="space-y-4 text-center">
             <h2 className="text-2xl font-semibold text-slate-900 dark:text-white sm:text-3xl lg:text-4xl">
-              Types of Collaboration
+              {title}
             </h2>
             <p className="mx-auto max-w-2xl text-base text-slate-600 dark:text-slate-400">
-              We offer various collaborations open to students from universities
-              worldwide. Each type provides a unique learning experience.
+              {description}
             </p>
           </motion.div>
 
@@ -54,8 +93,8 @@ export default function Type() {
             variants={containerVariants}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {cooperationTypes.map((item, index) => {
-              const Icon = item.icon;
+            {items.map((item, index) => {
+              const IconComponent = (LucideIcons as any)[item.icon_name] || LucideIcons.Circle;
               return (
                 <motion.div
                   key={index}
@@ -65,7 +104,7 @@ export default function Type() {
                   {/* Image Section */}
                   <div className="relative h-44 w-full bg-gradient-to-br from-primary-50 to-white dark:from-slate-800 dark:to-slate-900">
                     <img
-                      src={item.image}
+                      src={item.image_url}
                       alt={item.title}
                       className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
                     />
@@ -74,7 +113,7 @@ export default function Type() {
                   {/* Content Section */}
                   <div className="flex flex-col items-center p-6 text-center">
                     <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-100 text-primary-600 transition-all duration-300 group-hover:scale-110 dark:bg-primary-900/50 dark:text-primary-400">
-                      <Icon size={22} strokeWidth={2} />
+                      <IconComponent size={22} strokeWidth={2} />
                     </div>
 
                     <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
