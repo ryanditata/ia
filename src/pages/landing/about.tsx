@@ -1,25 +1,32 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView, Variants } from "framer-motion";
 import MapChart from "@/components/layouts/mapchart";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
+import { getAbout } from "@/service/about/getAbout";
 
-const stats = [
-  {
-    value: 10000,
-    label: "Students",
-    suffix: "+",
-  },
-  {
-    value: 500,
-    label: "Completed Projects",
-    suffix: "+",
-  },
-  {
-    value: 50,
-    label: "Countries",
-    suffix: "+",
-  },
-];
+interface AboutData {
+  title: string;
+  description: string;
+  student_value: number;
+  project_value: number;
+  country_value: number;
+  bottom_description: string;
+}
+
+const parseHighlightedText = (text?: string) => {
+  if (!text) return null;
+  const parts = text.split(/(\{.*?\})/g);
+  return parts.map((part, index) => {
+    if (part.startsWith("{") && part.endsWith("}")) {
+      return (
+        <strong key={index} className="text-slate-900 dark:text-white">
+          {part.slice(1, -1)}
+        </strong>
+      );
+    }
+    return <span key={index}>{part}</span>;
+  });
+};
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -44,6 +51,47 @@ const itemVariants: Variants = {
 export default function About() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [data, setData] = useState<AboutData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAboutData = async () => {
+      try {
+        const result = await getAbout();
+        if (result.success && result.data) {
+          setData(result.data);
+        }
+      } catch (error) {
+        console.error("Error fetching about data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchAboutData();
+  }, []);
+
+  const title = data?.title;
+  const description = data?.description;
+  
+  const computedStats = [
+    {
+      value: data?.student_value ?? 0,
+      label: "Students",
+      suffix: "+",
+    },
+    {
+      value: data?.project_value ?? 0,
+      label: "Completed Projects",
+      suffix: "+",
+    },
+    {
+      value: data?.country_value ?? 0,
+      label: "Countries",
+      suffix: "+",
+    },
+  ];
+
+  const bottomDescription = data?.bottom_description;
 
   return (
     <div
@@ -55,20 +103,19 @@ export default function About() {
 
       <div ref={ref} className="container relative mx-auto max-w-full px-4 sm:px-6 lg:px-8">
         <motion.div
+          key={isLoading ? "loading" : "loaded"}
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+          animate={isInView && !isLoading ? "visible" : "hidden"}
           className="space-y-16"
         >
           {/* Section Header */}
           <motion.div variants={itemVariants} className="space-y-4 text-center">
             <h2 className="text-2xl font-semibold text-slate-900 dark:text-white sm:text-3xl lg:text-4xl">
-              About Us
+              {title}
             </h2>
             <p className="mx-auto max-w-3xl text-base text-slate-600 dark:text-slate-400 lg:text-lg">
-              We are a platform that connects students from universities around
-              the world to collaborate on academic projects. With a mission to
-              create an inclusive and innovative learning environment.
+              {description}
             </p>
           </motion.div>
 
@@ -77,7 +124,7 @@ export default function About() {
             variants={containerVariants}
             className="grid grid-cols-1 lg:grid-cols-3 gap-6"
           >
-            {stats.map((stat, index) => (
+            {computedStats.map((stat, index) => (
               <motion.div
                 key={stat.label}
                 variants={itemVariants}
@@ -101,18 +148,8 @@ export default function About() {
             variants={itemVariants}
             className="mx-auto max-w-3xl text-center"
           >
-            <p className="text-base leading-relaxed text-slate-600 dark:text-slate-400 lg:text-lg">
-              We take pride in our growing community with{" "}
-              <strong className="text-slate-900 dark:text-white">
-                10,000+ students
-              </strong>{" "}
-              from various universities worldwide who have joined and collaborated
-              on numerous academic projects. With more than{" "}
-              <strong className="text-slate-900 dark:text-white">
-                500 completed projects
-              </strong>
-              , we remain committed to fostering an inclusive and innovative
-              learning environment.
+            <p key={bottomDescription} className="text-base leading-relaxed text-slate-600 dark:text-slate-400 lg:text-lg">
+              {parseHighlightedText(bottomDescription)}
             </p>
           </motion.div>
 
