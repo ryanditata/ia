@@ -31,3 +31,16 @@ export const getPartners = async (
     throw new Error("Failed to get partners");
   }
 };
+
+export const getPartnerHeader = async (): Promise<any> => {
+  try {
+    const res = await axiosInstance.get("https://lkui.dinus.id/api/v1/partner");
+    return res.data;
+  } catch (error: any) {
+    console.error(
+      "Error fetching partner header:",
+      error.response || error.message || error
+    );
+    throw new Error("Failed to get partner header");
+  }
+};

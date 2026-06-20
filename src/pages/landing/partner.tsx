@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, ChevronLeft, ChevronRight, ChevronDown, CheckCircle2, Bookmark, Building2, MapPin, ScrollText, FileSignature, Landmark, ListFilter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { getPartners } from "@/service/partner/getPartner";
+import { getPartners, getPartnerHeader } from "@/service/partner/getPartner";
 import { getCountries, getCities, getCategories } from "@/service/partner/getFilter";
 
 interface Partner {
@@ -41,6 +41,8 @@ export default function Partner() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [headerData, setHeaderData] = useState<{ title: string; description: string } | null>(null);
+  const [isHeaderLoading, setIsHeaderLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [countryFilter, setCountryFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -72,21 +74,27 @@ export default function Partner() {
   }, [currentPage, search, countryFilter, cityFilter, categoryFilter]);
 
   useEffect(() => {
-    const fetchFilterOptions = async () => {
+    const fetchInitialData = async () => {
       try {
-        const [resCountries, resCities, resCategories] = await Promise.all([
+        const [resCountries, resCities, resCategories, headerRes] = await Promise.all([
           getCountries(),
           getCities(),
-          getCategories()
+          getCategories(),
+          getPartnerHeader()
         ]);
         setCountries(resCountries);
         setCities(resCities);
         setCategories(resCategories);
+        if (headerRes?.success && headerRes?.data) {
+          setHeaderData(headerRes.data);
+        }
       } catch (error) {
-        console.error("Failed to load filter options", error);
+        console.error("Failed to load initial partner data", error);
+      } finally {
+        setIsHeaderLoading(false);
       }
     };
-    fetchFilterOptions();
+    fetchInitialData();
   }, []);
 
   const toTitleCase = (text?: string) => {
@@ -103,19 +111,19 @@ export default function Partner() {
     >
       <div className="container mx-auto max-w-full px-4 sm:px-6 lg:px-8">
         <motion.div
+          key={isHeaderLoading ? "loading" : "loaded"}
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          whileInView={!isHeaderLoading ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           viewport={{ once: true }}
           className="space-y-8"
         >
           {/* Section Header */}
           <div className="space-y-4 text-center">
             <h2 className="text-2xl font-semibold text-slate-900 dark:text-white sm:text-3xl lg:text-4xl">
-              List of Collaboration Partners
+              {headerData?.title}
             </h2>
             <p className="mx-auto max-w-2xl text-base text-slate-600 dark:text-slate-400">
-              We collaborate with various institutions worldwide to expand
-              academic networks and enhance the quality of education.
+              {headerData?.description}
             </p>
           </div>
 
