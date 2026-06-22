@@ -97,6 +97,35 @@ export default function Partner() {
     fetchInitialData();
   }, []);
 
+  useEffect(() => {
+    const handleMapCountryClick = (e: Event) => {
+      const customEvent = e as CustomEvent<string>;
+      const clickedCountry = customEvent.detail;
+      const matchedCountry = countries.find(
+        (c) => c.toLowerCase() === clickedCountry.toLowerCase()
+      );
+      
+      if (matchedCountry) {
+        setCountryFilter(matchedCountry);
+      } else {
+        const partialMatch = countries.find(
+          (c) => c.toLowerCase().includes(clickedCountry.toLowerCase()) || clickedCountry.toLowerCase().includes(c.toLowerCase())
+        );
+        if (partialMatch) {
+          setCountryFilter(partialMatch);
+        } else {
+          setCountryFilter(clickedCountry.toLowerCase());
+        }
+      }
+      setCurrentPage(1);
+    };
+
+    window.addEventListener("map-country-clicked", handleMapCountryClick);
+    return () => {
+      window.removeEventListener("map-country-clicked", handleMapCountryClick);
+    };
+  }, [countries]);
+
   const toTitleCase = (text?: string) => {
     if (!text) return "";
     return text

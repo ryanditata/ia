@@ -258,6 +258,16 @@ const MapChart = () => {
         setTooltip((current) => ({ ...current, visible: false }));
       };
 
+      container.events.on("click", () => {
+        const partnersSection = document.getElementById("partners");
+        if (partnersSection) {
+          partnersSection.scrollIntoView({ behavior: "smooth" });
+        }
+        window.dispatchEvent(
+          new CustomEvent("map-country-clicked", { detail: point.title })
+        );
+      });
+
       container.events.on("pointerover", (event) => {
         circle.animate({
           key: "scale",
