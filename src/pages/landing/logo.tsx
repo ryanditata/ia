@@ -12,7 +12,6 @@ interface LogoItem {
   is_active: boolean;
 }
 
-// Fallback nodes if API doesn't have enough logos
 const fallbackLogos = [
   { node: <University size={48} className="text-slate-400 dark:text-slate-600" /> },
   { node: <GraduationCap size={48} className="text-slate-400 dark:text-slate-600" /> },
@@ -41,7 +40,7 @@ export default function LogoSection() {
               alt: item.nama,
             }));
           };
-          
+
           setUnivLogos(mapLogos(res.data.univ));
           setMitraLogos(mapLogos(res.data.mitra));
         }
@@ -55,41 +54,41 @@ export default function LogoSection() {
   }, []);
 
   return (
-    <div className="relative bg-slate-50 py-12 dark:bg-slate-950">
-      <div ref={ref} className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="relative bg-slate-50 py-10 dark:bg-slate-950">
+      <div ref={ref} className="mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           key={isLoading ? "loading" : "loaded"}
           initial={{ opacity: 0, y: 20 }}
           animate={isInView && !isLoading ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="flex flex-col items-center justify-center space-y-12"
+          className="flex flex-col items-center justify-center space-y-10"
         >
-          <div className="text-center space-y-4">
+          <div className="text-center space-y-2">
             <p className="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Universities & Corporate Partners
             </p>
           </div>
-          
-          <div className="w-full max-w-6xl mx-auto space-y-8 overflow-hidden">
+
+          <div className="w-full mx-auto space-y-6 overflow-hidden">
             {!isLoading && (
               <>
-                <div className="space-y-4">
+                <div className="space-y-2">
                   <LogoLoop
                     logos={univLogos}
                     speed={30}
                     direction="left"
-                    logoHeight={56}
+                    logoHeight={40}
                     gap={80}
                     pauseOnHover={true}
                   />
                 </div>
-                
-                <div className="space-y-4">
+
+                <div className="space-y-2">
                   <LogoLoop
                     logos={mitraLogos}
                     speed={30}
                     direction="right"
-                    logoHeight={56}
+                    logoHeight={40}
                     gap={80}
                     pauseOnHover={true}
                   />
