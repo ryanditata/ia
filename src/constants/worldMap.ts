@@ -123,7 +123,8 @@ export const countryToContinent: Record<string, string> = {
   Kazakhstan: "Asia",
   Kenya: "Africa",
   Kiribati: "Oceania",
-  Korea: "Asia",
+  "North Korea": "Asia",
+  "South Korea": "Asia",
   Kuwait: "Asia",
   Kyrgyzstan: "Asia",
   Laos: "Asia",
@@ -288,6 +289,7 @@ export const countryCoordinates: Record<string, { latitude: number; longitude: n
   Australia: { latitude: -25.2744, longitude: 133.7751 },
   Austria: { latitude: 47.5162, longitude: 14.5501 },
   Azerbaijan: { latitude: 40.1431, longitude: 47.5769 },
+  Antarctica: { latitude: -82.8628, longitude: 135.0 },
 
   // B
   Bahamas: { latitude: 25.0343, longitude: -77.3963 },
@@ -319,6 +321,8 @@ export const countryCoordinates: Record<string, { latitude: number; longitude: n
   Chad: { latitude: 15.4542, longitude: 18.7322 },
   Chile: { latitude: -35.6751, longitude: -71.543 },
   China: { latitude: 35.8617, longitude: 104.1954 },
+  "Christmas Island": { latitude: -10.4475, longitude: 105.6904 },
+  "Cocos (Keeling) Islands": { latitude: -12.1642, longitude: 96.8710 },
   Colombia: { latitude: 4.5709, longitude: -74.2973 },
   Comoros: { latitude: -11.875, longitude: 43.8722 },
   Congo: { latitude: -0.228, longitude: 15.8277 },
@@ -352,6 +356,9 @@ export const countryCoordinates: Record<string, { latitude: number; longitude: n
   Fiji: { latitude: -16.5782, longitude: 179.4144 },
   Finland: { latitude: 61.9241, longitude: 25.7482 },
   France: { latitude: 46.2276, longitude: 2.2137 },
+  "French Guiana": { latitude: 3.9339, longitude: -53.1258 },
+  "Falkland Islands":  { latitude: -51.7963, longitude: -59.5236 },
+  "French Polynesia":  { latitude: -17.6797, longitude: -149.4068 },
 
   // G
   Gabon: { latitude: -0.8037, longitude: 11.6094 },
@@ -361,6 +368,7 @@ export const countryCoordinates: Record<string, { latitude: number; longitude: n
   Ghana: { latitude: 7.9465, longitude: -1.0232 },
   Gibraltar: { latitude: 36.1408, longitude: -5.3536 },
   Greece: { latitude: 39.0742, longitude: 21.8243 },
+  Greenland: { latitude: 71.7069, longitude: -42.6043 },
   Grenada: { latitude: 12.1165, longitude: -61.679 },
   Guadeloupe: { latitude: 16.2650, longitude: -61.5510 },
   Guatemala: { latitude: 15.7835, longitude: -90.2308 },
@@ -368,6 +376,7 @@ export const countryCoordinates: Record<string, { latitude: number; longitude: n
   Guinea: { latitude: 9.9456, longitude: -9.6966 },
   "Guinea-Bissau": { latitude: 11.8037, longitude: -15.1804 },
   Guyana: { latitude: 4.8604, longitude: -58.9302 },
+  "Guam":              { latitude: 13.4443,  longitude: 144.7937  },
 
   // H
   Haiti: { latitude: 18.9712, longitude: -72.2852 },
@@ -450,6 +459,7 @@ export const countryCoordinates: Record<string, { latitude: number; longitude: n
   "Norfolk Island": { latitude: -29.0408, longitude: 167.9547 },
   "North Macedonia": { latitude: 41.6086, longitude: 21.7453 },
   Norway: { latitude: 60.472, longitude: 8.4689 },
+  "New Caledonia":     { latitude: -20.9043, longitude: 165.6180  },
 
   // O
   Oman: { latitude: 21.4735, longitude: 55.9754 },
@@ -500,6 +510,7 @@ export const countryCoordinates: Record<string, { latitude: number; longitude: n
   "Solomon Islands": { latitude: -9.6457, longitude: 160.1562 },
   Somalia: { latitude: 5.1521, longitude: 46.1996 },
   "South Africa": { latitude: -30.5595, longitude: 22.9375 },
+  "South Georgia and the South Sandwich Islands": { latitude: -54.4296, longitude: -36.5879 },
   "South Sudan": { latitude: 6.877, longitude: 31.307 },
   Spain: { latitude: 40.4637, longitude: -3.7492 },
   "Sri Lanka": { latitude: 7.8731, longitude: 80.7718 },
