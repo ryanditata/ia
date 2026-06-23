@@ -100,7 +100,7 @@ export default function Timeline() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
-          className="mx-auto max-w-3xl space-y-12"
+          className="mx-auto max-w-7xl space-y-12"
         >
           {/* Section Header */}
           <div className="text-center space-y-2">
