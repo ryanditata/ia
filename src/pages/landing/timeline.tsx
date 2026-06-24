@@ -1,15 +1,7 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import {
-  Handshake,
-  MessageSquareText,
-  FilePenLine,
-  Rocket,
-  Activity,
-  Send,
-  CheckCircle2,
-  LucideIcon,
-} from "lucide-react";
+import * as LucideIcons from "lucide-react";
+import { getProcedures } from "@/service/procedure/getProcedures";
 
 export type StepStatus = "completed" | "current" | "pending";
 
@@ -18,71 +10,50 @@ export interface TimelineStep {
   title: string;
   description: string;
   status: StepStatus;
-  icon: LucideIcon;
+  icon: string;
   action?: {
     href: string;
     target?: string;
   };
 }
 
-const stepsData: TimelineStep[] = [
-  {
-    id: 1,
-    title: "Preparation Phase",
-    description:
-      "Initiation of cooperation by UDINUS or partner, including needs identification, substance review, and partner credibility assessment.",
-    status: "completed",
-    icon: Handshake,
-    action: {
-      href: "https://wa.me/6281391002282?text=Halo%20Admin%20LKUI,%20Saya%20ingin%20mengajukan%20permohonan%20kerja%20sama.",
-      target: "_blank",
-    },
-  },
-  {
-    id: 2,
-    title: "Discussion Phase",
-    description:
-      "Both parties discuss the objectives, scope, duration, and draft the Memorandum of Understanding (MoU) for mutual agreement.",
-    status: "current",
-    icon: MessageSquareText,
-  },
-  {
-    id: 3,
-    title: "MoU Signing",
-    description:
-      "The MoU is signed by both parties - Rector / Vice Rector / Work Unit Head and the Partner.",
-    status: "pending",
-    icon: FilePenLine,
-  },
-  {
-    id: 4,
-    title: "MoU Implementation",
-    description:
-      "Cooperation activities are carried out by the relevant work units based on the agreed MoU.",
-    status: "pending",
-    icon: Rocket,
-  },
-  {
-    id: 5,
-    title: "Monitoring & Evaluation",
-    description:
-      "LKUI conducts monitoring and evaluation every three months based on reports from work units.",
-    status: "pending",
-    icon: Activity,
-  },
-  {
-    id: 6,
-    title: "Reporting",
-    description:
-      "Work units submit a full report of all cooperation implementation activities to the Vice Rector for Research and Cooperation.",
-    status: "pending",
-    icon: Send,
-  },
-];
-
 export default function Timeline() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const [stepsData, setStepsData] = useState<TimelineStep[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProcedures = async () => {
+      try {
+        const result = await getProcedures();
+        if (result.success && result.data) {
+          const { completed = [], current = [], pending = [] } = result.data;
+          
+          const combined: TimelineStep[] = [
+            ...completed,
+            ...current.map((item: any) => ({
+              ...item,
+              action: {
+                href: "https://wa.me/6281391002282?text=Halo%20Admin%20LKUI,%20Saya%20ingin%20mengajukan%20permohonan%20kerja%20sama.",
+                target: "_blank"
+              }
+            })),
+            ...pending
+          ];
+          
+          combined.sort((a, b) => a.id - b.id);
+
+          setStepsData(combined);
+        }
+      } catch (error) {
+        console.error("Error fetching procedures data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProcedures();
+  }, []);
 
   return (
     <div
@@ -97,10 +68,11 @@ export default function Timeline() {
         className="container relative mx-auto max-w-full px-4 sm:px-6 lg:px-8"
       >
         <motion.div
+          key={isLoading ? "loading" : "loaded"}
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
-          className="mx-auto max-w-7xl space-y-12"
+          className="mx-auto max-w-full md:max-w-2xl xl:max-w-4xl 2xl:max-w-7xl space-y-12"
         >
           {/* Section Header */}
           <div className="text-center space-y-2">
@@ -111,8 +83,8 @@ export default function Timeline() {
 
           {/* Timeline Container */}
           <div className="relative py-4">
-            {stepsData.map((step, index) => {
-              const Icon = step.icon;
+            {!isLoading && stepsData.map((step, index) => {
+              const IconComponent = (LucideIcons as any)[step.icon] || LucideIcons.FileText;
               const isLast = index === stepsData.length - 1;
               const isLineActive = step.status === "completed";
 
@@ -151,12 +123,12 @@ export default function Timeline() {
                         : "border-slate-200 text-slate-400 dark:border-slate-800 dark:text-slate-600"
                     }`}
                   >
-                    <Icon size={22} strokeWidth={2} />
+                    <IconComponent size={22} strokeWidth={2} />
 
                     {/* Checkmark Badge for Completed */}
                     {step.status === "completed" && (
                       <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-white dark:bg-slate-950">
-                        <CheckCircle2
+                        <LucideIcons.CheckCircle2
                           size={18}
                           className="text-emerald-500 fill-emerald-100 dark:fill-emerald-950"
                         />
@@ -175,7 +147,7 @@ export default function Timeline() {
                             : "text-slate-400 dark:text-slate-600"
                         }`}
                       >
-                        Step {step.id}
+                        Step {index + 1}
                       </span>
                     </div>
 
